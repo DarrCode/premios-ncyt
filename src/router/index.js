@@ -4,23 +4,29 @@ import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import(/* webpackChunkName: "about" */ '@/views/auth/LoginView.vue')
-  }
+const routes = [{
+        path: '/',
+        name: 'home',
+        component: HomeView
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: () =>
+            import ( /* webpackChunkName: "about" */ '@/views/auth/LoginView.vue')
+    },
+    {
+        path: '/postulados',
+        name: 'postulados',
+        component: () =>
+            import ( /* webpackChunkName: "about" */ '@/views/postulates/Postulates.vue')
+    }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router
