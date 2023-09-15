@@ -69,22 +69,19 @@
 				>
 					<template v-slot:activator="{ attrs, on }">
 						<v-btn
-							class="white--text ma-5"
+							class="white--text"
 							v-bind="attrs"
 							v-on="on"
 							color="warning lighten-1"
               samll
 						>
-							Opciones
 							<v-icon
-								right
 								dark
 							>
 								mdi-cog-outline
 							</v-icon>
 						</v-btn>
 					</template>
-
 					<v-list>
 						<v-list-item @click="viewDetail(item)">
 							<v-list-item-title>Ver detalles</v-list-item-title>
@@ -92,12 +89,14 @@
 								<v-icon  color="info">mdi-eye</v-icon>
 							</v-list-item-action>
 						</v-list-item>
+
 						<v-list-item>
 							<v-list-item-title>Observasion</v-list-item-title>
 							<v-list-item-action>
 								<v-icon color="warning">mdi-square-edit-outline</v-icon>
 							</v-list-item-action>
 						</v-list-item>
+            
 						<v-list-item>
 							<v-list-item-title>Rechazar</v-list-item-title>
 							<v-list-item-action>
@@ -128,17 +127,45 @@
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Settings</v-toolbar-title>
+          <v-toolbar-title>Proyecto</v-toolbar-title>
         </v-toolbar>
         <v-container>
-          <v-row>
-            <v-col cols="12">
-          <v-card>
-          <v-card-text>asas
-           </v-card-text>
-          </v-card>
-        </v-col>
-        </v-row>
+          <template>
+            <v-card>
+              <v-card-title>
+                Nutrition
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                :headers="headers"
+                :items="desserts"
+                :search="search"
+              >
+                <template v-slot:activator="{ attrs, on }">
+                  <v-btn
+                    class="white--text"
+                    v-bind="attrs"
+                    v-on="on"
+                    color="warning lighten-1"
+                    small
+                  >
+                    <v-icon
+                      dark
+                    >
+                      mdi-cog-outline
+                    </v-icon>
+                  </v-btn>
+                </template>
+              </v-data-table>
+            </v-card>
+          </template>
         </v-container>
       </v-card>
     </v-dialog>
