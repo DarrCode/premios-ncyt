@@ -40,7 +40,7 @@
     </div>
   </template>
   <script>
-  
+
   export default {
     name: 'FormLogin',
     data () {
@@ -58,7 +58,7 @@
     },
     methods: {
       login (){
-        this.$router.push('dashboard')
+        this.$router.push('/')
       }
     }
   }
