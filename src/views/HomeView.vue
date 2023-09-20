@@ -1,174 +1,116 @@
 <template>
   <v-container>
     <v-row>
-    <v-col cols="12" class="mt-10">
-      <v-card
-        elevation="2"
-      >
-        <v-card-title>Filtrar postulados</v-card-title>
-        <v-card-text>
-          <div class="d-flex ">
+      <v-col cols="12" class="mt-10">
+        <v-card
+          elevation="2">
+          <v-card-title>Filtrar postulados</v-card-title>
+          <v-card-text>
+            <div class="d-flex ">
               <v-select
                 :items="participants"
                 label="Por participantes"
                 outlined
               ></v-select>
+
               <v-select
                 :items="categories"
                 label="Por categorías"
                 outlined
                 class="mx-2"
               ></v-select>
+
               <v-select
                 :items="mentions"
                 label="Por mención"
                 outlined
               ></v-select>
+
               <v-select
               class="ml-2"
                 :items="status"
                 label="Estado"
                 outlined
               ></v-select>
-          </div>
-          <div class="d-flex justify-end">
-            <v-btn color="primary">
-              Filtrar
-              <v-icon
-                dark
-                right
-              >
-                mdi-filter
-              </v-icon>
-            </v-btn>
-          </div>
-        </v-card-text>
-      </v-card>
-    </v-col>
-  </v-row>
-  <v-row>
-    <v-col cols="12" class="mt-5">
-      <v-data-table
-    :headers="headers"
-    :items="desserts"
-    class="elevation-1"
-  >
-    <template v-slot:[`item.status`]="{ item }">
-      <v-chip
-        :color="getColor(item.status)"
-        dark
-      >
-        {{ item.status }}
-      </v-chip>
-    </template>
-    <template v-slot:[`item.actions`]="{ item }">
-					<v-menu
-					rounded="lg"
-					offset-y
-          small
-				>
-					<template v-slot:activator="{ attrs, on }">
-						<v-btn
-							class="white--text"
-							v-bind="attrs"
-							v-on="on"
-							color="warning lighten-1"
-              samll
-						>
-							<v-icon
-								dark
-							>
-								mdi-cog-outline
-							</v-icon>
-						</v-btn>
-					</template>
-					<v-list>
-						<v-list-item @click="viewDetail(item)">
-							<v-list-item-title>Ver detalles</v-list-item-title>
-							<v-list-item-action>
-								<v-icon  color="info">mdi-eye</v-icon>
-							</v-list-item-action>
-						</v-list-item>
+            </div>
+            <div class="d-flex justify-end">
+              <v-btn color="primary">
+                Filtrar
+                <v-icon
+                  dark
+                  right
+                >
+                  mdi-filter
+                </v-icon>
+              </v-btn>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
 
-						<v-list-item>
-							<v-list-item-title>Observasion</v-list-item-title>
-							<v-list-item-action>
-								<v-icon color="warning">mdi-square-edit-outline</v-icon>
-							</v-list-item-action>
-						</v-list-item>
-            
-						<v-list-item>
-							<v-list-item-title>Rechazar</v-list-item-title>
-							<v-list-item-action>
-								<v-icon color="error">mdi-delete-outline</v-icon>
-							</v-list-item-action>
-						</v-list-item>
-					</v-list>
-				</v-menu>
-				</template>
-  </v-data-table>
-</v-col>
-  </v-row>
-  <v-dialog
-      v-model="dialog"
-      fullscreen
-      hide-overlay
-      transition="dialog-bottom-transition"
-    >
-      <v-card>
-        <v-toolbar
-          dark
-          color="primary"
-        >
-          <v-btn
-            icon
-            dark
-            @click="dialog = false"
-          >
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <v-toolbar-title>Proyecto</v-toolbar-title>
-        </v-toolbar>
-        <v-container>
-          <template>
-            <v-card>
-              <v-card-title>
-                Nutrition
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="search"
-                  append-icon="mdi-magnify"
-                  label="Search"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-card-title>
-              <v-data-table
-                :headers="headers"
-                :items="desserts"
-                :search="search"
-              >
-                <template v-slot:activator="{ attrs, on }">
-                  <v-btn
-                    class="white--text"
-                    v-bind="attrs"
-                    v-on="on"
-                    color="warning lighten-1"
-                    small
-                  >
-                    <v-icon
-                      dark
-                    >
-                      mdi-cog-outline
-                    </v-icon>
-                  </v-btn>
-                </template>
-              </v-data-table>
-            </v-card>
+    <v-row>
+      <v-col cols="12" class="mt-5">
+        <v-data-table
+          :headers="headers"
+          :items="desserts"
+          class="elevation-1">
+          <template v-slot:[`item.status`]="{ item }">
+            <v-chip
+              :color="getColor(item.status)"
+              dark
+            >
+              {{ item.status }}
+            </v-chip>
           </template>
-        </v-container>
-      </v-card>
-    </v-dialog>
+          <template v-slot:[`item.actions`]="{ item }">
+            <v-menu
+            rounded="lg"
+            offset-y
+            small>
+            <template v-slot:activator="{ attrs, on }">
+              <v-btn
+                class="white--text"
+                v-bind="attrs"
+                v-on="on"
+                color="warning lighten-1"
+                samll
+              >
+                <v-icon
+                  dark
+                >
+                  mdi-cog-outline
+                </v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="viewDetailPostulate(item)">
+                <v-list-item-title>Ver detalles</v-list-item-title>
+                <v-list-item-action>
+                  <v-icon  color="info">mdi-eye</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-title>Observasion</v-list-item-title>
+                <v-list-item-action>
+                  <v-icon color="warning">mdi-square-edit-outline</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+              
+              <v-list-item>
+                <v-list-item-title>Rechazar</v-list-item-title>
+                <v-list-item-action>
+                  <v-icon color="error">mdi-delete-outline</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+          </template>
+        </v-data-table>
+      </v-col>
+    </v-row>
+    <detailsPostulate ref="modalDetailsPostulate" />
   </v-container>
 </template>
 
@@ -176,6 +118,9 @@
 
   export default {
     name: 'HomeView',
+    components: {
+      detailsPostulate: () => import(/* webpackPrefetch: true */ '@/components/postulates/DetailsPostulate.vue'),
+    },
     data (){
       return {
         dialog: false,
@@ -237,9 +182,8 @@
         else if (status === 'Validado') return 'success'
         else return 'primary'
       },
-      viewDetail(item) {
-        console.log(item);
-        this.dialog = true
+      viewDetailPostulate() {
+        this.$refs['modalDetailsPostulate'].open()
       }
     },
   }
