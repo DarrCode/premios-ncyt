@@ -8,7 +8,7 @@
             <v-card>
                 <v-toolbar
                     dark
-                    color="primary">
+                    color="cyan lighten-1">
                     <v-btn
                         icon
                         dark
@@ -20,21 +20,21 @@
                 </v-toolbar>
                 <v-container>
                     <v-row>
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="4">
                             <PersonalData/>
                         </v-col>
 
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="4">
                             <AcademicData/> 
+                        </v-col>
+                        
+                        <v-col cols="12" md="4">
+                            <LaborData/>
                         </v-col>
                     </v-row>
 
                     <v-row>
-                        <v-col cols="12" md="6">
-                            <LaborData/>
-                        </v-col>
-
-                        <v-col cols="12" md="6">
+                        <v-col cols="12">
                             <FilesData/>
                         </v-col>
                     </v-row>

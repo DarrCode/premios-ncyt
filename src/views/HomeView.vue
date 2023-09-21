@@ -4,7 +4,15 @@
       <v-col cols="12" class="mt-10">
         <v-card
           elevation="2">
-          <v-card-title>Filtrar postulados</v-card-title>
+          <v-toolbar
+            class="mb-4"
+            color="cyan lighten-1"
+            dark
+          >
+            <v-icon large class="mr-3">mdi-filter</v-icon>
+            <v-toolbar-title>Filtrar Postulantes</v-toolbar-title>
+            <v-spacer></v-spacer>
+          </v-toolbar>
           <v-card-text>
             <div class="d-flex ">
               <v-select
@@ -51,63 +59,74 @@
 
     <v-row>
       <v-col cols="12" class="mt-5">
-        <v-data-table
-          :headers="headers"
-          :items="desserts"
-          class="elevation-1">
-          <template v-slot:[`item.status`]="{ item }">
-            <v-chip
-              :color="getColor(item.status)"
+        <v-card>
+          <v-toolbar
+              class="mb-4"
+              color="cyan lighten-1"
               dark
             >
-              {{ item.status }}
-            </v-chip>
-          </template>
-          <template v-slot:[`item.actions`]="{ item }">
-            <v-menu
-            rounded="lg"
-            offset-y
-            small>
-            <template v-slot:activator="{ attrs, on }">
-              <v-btn
-                class="white--text"
-                v-bind="attrs"
-                v-on="on"
-                color="warning lighten-1"
-                samll
+              <v-icon large class="mr-3">mdi-account-group</v-icon>
+              <v-toolbar-title>Postulantes</v-toolbar-title>
+              <v-spacer></v-spacer>
+          </v-toolbar>
+          <v-data-table
+            :headers="headers"
+            :items="desserts"
+            class="elevation-1">
+            <template v-slot:[`item.status`]="{ item }">
+              <v-chip
+                :color="getColor(item.status)"
+                dark
               >
-                <v-icon
-                  dark
-                >
-                  mdi-cog-outline
-                </v-icon>
-              </v-btn>
+                {{ item.status }}
+              </v-chip>
             </template>
-            <v-list>
-              <v-list-item @click="viewDetailPostulate(item)">
-                <v-list-item-title>Ver detalles</v-list-item-title>
-                <v-list-item-action>
-                  <v-icon  color="info">mdi-eye</v-icon>
-                </v-list-item-action>
-              </v-list-item>
-
-              <v-list-item>
-                <v-list-item-title>Observasion</v-list-item-title>
-                <v-list-item-action>
-                  <v-icon color="warning">mdi-square-edit-outline</v-icon>
-                </v-list-item-action>
-              </v-list-item>
-              
-              <v-list-item>
-                <v-list-item-title>Rechazar</v-list-item-title>
-                <v-list-item-action>
-                  <v-icon color="error">mdi-delete-outline</v-icon>
-                </v-list-item-action>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-          </template>
-        </v-data-table>
+            <template v-slot:[`item.actions`]="{ item }">
+              <v-menu
+              rounded="lg"
+              offset-y
+              small>
+              <template v-slot:activator="{ attrs, on }">
+                <v-btn
+                  class="white--text"
+                  v-bind="attrs"
+                  v-on="on"
+                  color="warning lighten-1"
+                  samll
+                >
+                  <v-icon
+                    dark
+                  >
+                    mdi-cog-outline
+                  </v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item @click="viewDetailPostulate(item)">
+                  <v-list-item-title>Ver detalles</v-list-item-title>
+                  <v-list-item-action>
+                    <v-icon  color="info">mdi-eye</v-icon>
+                  </v-list-item-action>
+                </v-list-item>
+  
+                <v-list-item>
+                  <v-list-item-title>Observación</v-list-item-title>
+                  <v-list-item-action>
+                    <v-icon color="warning">mdi-square-edit-outline</v-icon>
+                  </v-list-item-action>
+                </v-list-item>
+                
+                <v-list-item>
+                  <v-list-item-title>Rechazar</v-list-item-title>
+                  <v-list-item-action>
+                    <v-icon color="error">mdi-delete-outline</v-icon>
+                  </v-list-item-action>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+            </template>
+          </v-data-table>
+        </v-card>
       </v-col>
     </v-row>
     <detailsPostulate ref="modalDetailsPostulate" />
