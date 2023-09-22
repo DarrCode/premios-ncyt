@@ -6,7 +6,7 @@
           elevation="2">
           <v-toolbar
             class="mb-4"
-            color="cyan lighten-1"
+            color="primary"
             dark
           >
             <v-icon large class="mr-3">mdi-filter</v-icon>
@@ -34,15 +34,13 @@
                 outlined
               ></v-select>
 
-              <v-select
+              <!-- <v-select
               class="ml-2"
                 :items="status"
                 label="Estado"
                 outlined
-              ></v-select>
-            </div>
-            <div class="d-flex justify-end">
-              <v-btn color="primary">
+              ></v-select> -->
+              <v-btn class="ml-2" x-large color="primary">
                 Filtrar
                 <v-icon
                   dark
@@ -60,15 +58,6 @@
     <v-row>
       <v-col cols="12" class="mt-5">
         <v-card>
-          <v-toolbar
-              class="mb-4"
-              color="cyan lighten-1"
-              dark
-            >
-              <v-icon large class="mr-3">mdi-account-group</v-icon>
-              <v-toolbar-title>Postulantes</v-toolbar-title>
-              <v-spacer></v-spacer>
-          </v-toolbar>
           <v-data-table
             :headers="headers"
             :items="desserts"

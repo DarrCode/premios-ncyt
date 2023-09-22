@@ -1,47 +1,58 @@
 <template>
-    <div>
-        <v-dialog
-            v-model="modal"
-            fullscreen
-            hide-overlay
-            transition="dialog-bottom-transition">
-            <v-card>
-                <v-toolbar
-                    dark
-                    color="cyan lighten-1">
-                    <v-btn
-                        icon
-                        dark
-                        @click="modal = false"
-                    >
-                        <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                    <v-toolbar-title>Proyecto</v-toolbar-title>
-                </v-toolbar>
-                <v-container>
-                    <v-row>
-                        <v-col cols="12" md="4">
-                            <PersonalData/>
-                        </v-col>
+  <v-dialog
+		v-model="modal"
+		fullscreen
+		hide-overlay
+		transition="dialog-bottom-transition"
+	>
+		<v-card>
+			<v-toolbar color="primary" dark>
+				<v-btn
+						icon
+						dark
+						@click="modal = false"
+				>
+						<v-icon>mdi-close</v-icon>
+				</v-btn>
+				<v-toolbar-title>*** nombre del proyecto ***</v-toolbar-title>
+				<v-spacer></v-spacer>
+				<v-btn
+					color="success"
+					@click="dialog = false"
+				>
+					VERIFICAR
+				</v-btn>
+				<v-btn
+				class="ml-2"
+					color="warning"
+					@click="dialog = false"
+				>
+					En espera
+				</v-btn>
+		</v-toolbar>
+		<v-container>
+			<v-row>
+					<v-col cols="12" md="4">
+							<PersonalData/>
+					</v-col>
 
-                        <v-col cols="12" md="4">
-                            <AcademicData/> 
-                        </v-col>
-                        
-                        <v-col cols="12" md="4">
-                            <LaborData/>
-                        </v-col>
-                    </v-row>
+					<v-col cols="12" md="4">
+							<AcademicData/> 
+					</v-col>
+					
+					<v-col cols="12" md="4">
+							<LaborData/>
+					</v-col>
+			</v-row>
 
-                    <v-row>
-                        <v-col cols="12">
-                            <FilesData/>
-                        </v-col>
-                    </v-row>
-                </v-container>
-            </v-card>
-        </v-dialog>
-    </div>
+			<v-row>
+					<v-col cols="12">
+							<FilesData/>
+					</v-col>
+			</v-row>
+			</v-container>
+		</v-card>
+	</v-dialog>
 </template>
 
 <script>
