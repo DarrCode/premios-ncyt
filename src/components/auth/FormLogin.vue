@@ -15,7 +15,6 @@
         <v-text-field
           v-model="form.password"
           color="primary"
-          :rules="[rules.required, rules.min]"
           type="password"
           label="Contraseña"
           hint="Al menos 8 caracteres"
@@ -40,26 +39,81 @@
     </div>
   </template>
   <script>
+import apiAuth from "@/api/modules/auth/api_auth"
 
   export default {
     name: 'FormLogin',
     data () {
-      return {
-        form: {
-          email: '',
-          password: '',
+    return {
+      snackbar: {
+        snackbar: false,
+      },
+      form: {
+        email: '',
+        password: '',
+        button: {
+          disabled: false,
+          innerText: 'Iniciar sesión',
+          original: 'Iniciar sesión',
+          onEvent: ' Iniciando sesión'
         },
-        rules: {
-          required: value => !!value || 'Requerido.',
-          min: v => v.length >= 8 || 'Minimo 8 caracteres',
-          emailMatch: () => (`El correo y la contrasena no coinsiden`),
-        },
-      }
+        // emailRules: [
+        //   v => !!v || 'Dirección de correo es requerido',
+        //   v => !v || /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Dirección de correo no es valida'
+        // ],
+        valid: true,
+      },
+    }
     },
     methods: {
-      login (){
-        this.$router.push('/')
+      async login() {
+      this.form.button.disabled = true
+      this.form.button.innerText = this.form.button.onEvent
+
+      const data = {
+        route: 'api/auth/login',
+        params: {
+          email: this.form.email,
+          password: this.form.password
+        }
       }
+
+      apiAuth.post(data).then(response => {
+        let {data} = response;
+
+        if (data.success) {
+          this.form.button.disabled = false
+          this.form.button.innerText = this.form.button.original
+
+          this.snackbar = {
+            title: 'Iniciando sesion',
+            info: data.msg,
+            snackbar: true,
+            color: 'success',
+            icon: 'mdi-check-circle-outline'
+          }
+
+          // this.$store.state.authenticated = true
+
+
+          this.$router.push('/')
+        } else {
+          this.form.button.disabled = false
+          this.form.button.innerText = this.form.button.original
+
+          this.snackbar = {
+            title: 'Error',
+            info: data.msg,
+            snackbar: true,
+            color: 'error',
+            icon: 'mdi-close-circle-outline'
+          }
+        }
+      })
+      .catch((error) => {
+        console.error('error', error)
+      })
+    },
     }
   }
   </script>
