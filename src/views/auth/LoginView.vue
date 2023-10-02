@@ -10,17 +10,15 @@
                 <v-row class="no-gutters">
                   <v-col cols="11" lg="9" class="mx-auto">
                     <div class="logo mt-5 ">
-                      <a class="d-flex white--text" href="index.html" title="premios">
-                        LOGO
-                      </a>
                     </div>
                   </v-col>
                 </v-row>
                 <v-row class="no-gutters my-auto">
                   <v-col cols="12" lg="10" class="mx-auto">
-                    <h1 class="text-9 font-weight-600 mb-5 white--text">
-                      Sistema para la administración de los Premios Nacionales de Ciencia y Tecnología
-                    </h1>
+                    <v-img
+                      class=""
+                      src="../../assets/img/premiosNacionales.png"
+                    ></v-img>
                   </v-col>
                 </v-row>
               </v-container>

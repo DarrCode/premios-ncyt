@@ -43,7 +43,8 @@
       return {
 				drawer: true,
         items: [
-          { title: 'POSTULADOS', icon: 'mdi-view-dashboard' },
+          { title: 'POSTULADOS', icon: 'mdi-list-box' },
+          { title: 'USUARIOS', icon: 'mdi-account-group' },
         ],
       }
     },
