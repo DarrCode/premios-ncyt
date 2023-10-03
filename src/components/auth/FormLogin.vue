@@ -99,7 +99,7 @@
           this.$session.start()
           this.$session.set('accessToken', data.data.token)
 
-          // this.$store.state.authenticated = true
+          this.$store.state.authenticated = true
 
 
           this.$router.push('/')

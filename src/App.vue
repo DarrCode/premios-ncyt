@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Sidebar  />
+    <Sidebar v-if="$store.state.authenticated" />
     <v-main>
       <!-- <Navbar v-if="authenticated" /> -->
         <router-view></router-view>
