@@ -40,7 +40,7 @@
             <div class="d-flex d-flex-row">
               <v-select
                 v-model="filter.mencion"
-                :items="mentions"
+                :items="copyMentions"
                 item-text="name"
                 label="Por mencion"
                 outlined
@@ -177,20 +177,19 @@
         rewards: [],
         loadingRewards: false,
         mentions: [],
-        status: ['En espera', 'Rechazado', 'Revision']
+        status: ['En espera', 'Rechazado', 'Revision'],
+        copyMentions: []
       }
     },
     mounted (){
-      this.getMentions()
-      this.getRewards()
+      setTimeout(() => {
+        this.getMentions()
+        this.getRewards()
+      }, 1000);
     },
     watch: {
-      'filter.premioId' (newvalue, oldvalue) {
-        if (oldvalue && oldvalue.id != newvalue.id) {
-          this.mentions = []
-          this.getMentions()
-        }
-        this.mentions = this.mentions.filter((element) => element.premio_id === newvalue.id)
+      'filter.premio' (newvalue) {
+        this.copyMentions = this.mentions.filter((element) => element.premio_id === newvalue.id)
       },
     },
     methods: {
@@ -225,6 +224,9 @@
         })
       },
       getPostulations(){
+        const filter = {
+          
+        }
         const data = {
           route: 'api/postulaciones',
           params: {
@@ -236,7 +238,7 @@
             }
           }
         }
-        console.log(data);
+
         http.post(data).then(response => {
           let {data} = response
 
