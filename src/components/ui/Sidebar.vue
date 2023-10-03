@@ -24,6 +24,7 @@
           v-for="item in items"
           :key="item.title"
           link
+          :to="item.path"
         >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
@@ -43,8 +44,8 @@
       return {
 				drawer: true,
         items: [
-          { title: 'POSTULADOS', icon: 'mdi-list-box' },
-          { title: 'USUARIOS', icon: 'mdi-account-group' },
+          { title: 'POSTULADOS', icon: 'mdi-list-box', path: '/'},
+          { title: 'USUARIOS', icon: 'mdi-account-group', path: '/users' },
         ],
       }
     },

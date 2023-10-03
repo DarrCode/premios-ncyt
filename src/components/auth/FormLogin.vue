@@ -39,7 +39,8 @@
     </div>
   </template>
   <script>
-import apiAuth from "@/api/modules/auth/api_auth"
+
+  import http from "@/api/api.js";
 
   export default {
     name: 'FormLogin',
@@ -78,7 +79,7 @@ import apiAuth from "@/api/modules/auth/api_auth"
         }
       }
 
-      apiAuth.post(data).then(response => {
+      http.post(data).then(response => {
         let {data} = response;
 
         if (data.success) {
@@ -92,6 +93,11 @@ import apiAuth from "@/api/modules/auth/api_auth"
             color: 'success',
             icon: 'mdi-check-circle-outline'
           }
+
+          console.log("datita",data);
+
+          this.$session.start()
+          this.$session.set('accessToken', data.data.token)
 
           // this.$store.state.authenticated = true
 
