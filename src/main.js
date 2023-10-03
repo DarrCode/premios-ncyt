@@ -17,7 +17,6 @@ new Vue({
   beforeCreate () {
     if (this.$session.exists()) {
       http.defaults.headers.common.Authorization = `bearer ${this.$session.get('accessToken')}`
-      console.log("sesion existe", http.defaults.headers.common.Authorization);
     }
   },
   render: h => h(App)

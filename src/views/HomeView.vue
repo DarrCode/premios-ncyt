@@ -9,38 +9,57 @@
             color="primary"
             dark
           >
-            <v-icon large class="mr-3">mdi-filter</v-icon>
-            <v-toolbar-title>Filtrar Postulantes</v-toolbar-title>
+            <v-icon  class="mr-3">mdi-filter</v-icon>
+            <v-toolbar-title>Filtrar proyectos</v-toolbar-title>
             <v-spacer></v-spacer>
           </v-toolbar>
           <v-card-text>
-            <div class="d-flex ">
+            <div class="d-flex d-flex-row">
               <v-select
+                v-model="filter.grupal"
                 :items="participants"
-                label="Por participantes"
+                label="Tipo de participantes"
                 outlined
               ></v-select>
 
               <v-select
-                :items="categories"
-                label="Por categorías"
+                v-model="filter.premio"
+                :items="rewards"
+                item-text="name"
+                label="Por premios"
                 outlined
                 class="mx-2"
+                return-object
+              ></v-select>
+              <v-progress-circular
+                v-if="loadingRewards"
+                indeterminate
+                color="primary"
+              ></v-progress-circular>
+            </div>
+            <div class="d-flex d-flex-row">
+              <v-select
+                v-model="filter.mencion"
+                :items="mentions"
+                item-text="name"
+                label="Por mencion"
+                outlined
+                class="mx-2"
+                return-object
               ></v-select>
 
               <v-select
-                :items="mentions"
-                label="Por mención"
-                outlined
-              ></v-select>
-
-              <!-- <v-select
               class="ml-2"
                 :items="status"
                 label="Estado"
                 outlined
-              ></v-select> -->
-              <v-btn class="ml-2" x-large color="primary">
+              ></v-select>
+              <v-btn
+                class="ml-2"
+                x-large
+                color="primary"
+                @click="getPostulations"
+              >
                 Filtrar
                 <v-icon
                   dark
@@ -60,12 +79,17 @@
         <v-card>
           <v-data-table
             :headers="headers"
-            :items="desserts"
-            class="elevation-1">
+            :items="postulations"
+            class="elevation-1"
+          >
+            <template v-slot:[`item.grupal`]="{ item }">
+              {{ item.grupal ? 'Grupal' : 'Individual' }}
+            </template>
             <template v-slot:[`item.status`]="{ item }">
               <v-chip
                 :color="getColor(item.status)"
                 dark
+                outlined
               >
                 {{ item.status }}
               </v-chip>
@@ -77,16 +101,14 @@
               small>
               <template v-slot:activator="{ attrs, on }">
                 <v-btn
-                  class="white--text"
                   v-bind="attrs"
                   v-on="on"
-                  color="warning lighten-1"
-                  samll
+                  icon
                 >
                   <v-icon
                     dark
                   >
-                    mdi-cog-outline
+                    mdi-dots-vertical
                   </v-icon>
                 </v-btn>
               </template>
@@ -97,14 +119,12 @@
                     <v-icon  color="info">mdi-eye</v-icon>
                   </v-list-item-action>
                 </v-list-item>
-  
                 <v-list-item>
                   <v-list-item-title>Observación</v-list-item-title>
                   <v-list-item-action>
                     <v-icon color="warning">mdi-square-edit-outline</v-icon>
                   </v-list-item-action>
                 </v-list-item>
-                
                 <v-list-item>
                   <v-list-item-title>Rechazar</v-list-item-title>
                   <v-list-item-action>
@@ -123,6 +143,7 @@
 </template>
 
 <script>
+  import http from "@/api/api.js"
 
   export default {
     name: 'HomeView',
@@ -138,53 +159,94 @@
             text: 'Nombre',
             align: 'start',
             sortable: false,
-            value: 'name',
+            value: 'menciones48.titulo',
           },
-          { text: 'Tipo participante', value: 'participants' },
-          { text: 'Categoria', value: 'category' },
-          { text: 'Nominacion', value: 'nomination' },
+          { text: 'Tipo participante', value: 'grupal' },
+          { text: 'Premios', value: 'premioName' },
+          { text: 'Nominación', value: 'mencionName' },
           { text: 'Estado', value: 'status' },
-          { text: 'Acciones', value: 'actions', align: 'center' },
+          { text: ' ', value: 'actions', align: 'center' },
 
         ],
-        desserts: [
-          {
-            name: 'Proyecto',
-            participants: 'Grupal',
-            category: 'Categoria 1',
-            nomination: 'nominacion 1',
-            status: 'Verificado',
-          },
-          {
-            name: 'Proyecto',
-            participants: 'Grupal',
-            category: 'Categoria 1',
-            nomination:  'nominacion 3',
-            status: 'Validado',
-          },
-          {
-            name: 'Proyecto',
-            participants: 'Individual',
-            category: 'Categoria 2',
-            nomination:  'nominacion 2',
-            status: 'Validado',
-          },
-          {
-            name: 'Proyecto',
-            participants: 'Individual',
-            category: 'Categoria 2',
-            nomination: 'nominacion 1',
-            status: 'Rechazado',
-          },
+        postulations: [
         ],
-
+        filter:{
+          grupal: true,
+        },
         participants: ['Grupales', 'Individuales'],
-        categories: ['Categoria 1', 'Categoria 2', 'Categoria 3'],
-        mentions: ['mencion 1', 'mencion 2', 'mencion 3'],
-        status: ['Verificadas', 'Validadas', 'Rechazadas']
+        rewards: [],
+        loadingRewards: false,
+        mentions: [],
+        status: ['En espera', 'Rechazado', 'Revision']
       }
     },
+    mounted (){
+      this.getMentions()
+      this.getRewards()
+    },
+    watch: {
+      'filter.premioId' (newvalue, oldvalue) {
+        if (oldvalue && oldvalue.id != newvalue.id) {
+          this.mentions = []
+          this.getMentions()
+        }
+        this.mentions = this.mentions.filter((element) => element.premio_id === newvalue.id)
+      },
+    },
     methods: {
+      getRewards(){
+        this.loadingRewards = true
+        const data = {
+          route: 'api/commonData/getRewards',
+          params: {}
+        }
+
+        http.get(data).then(response => {
+          let {data} = response;
+
+          if (data.success) {
+            this.rewards = data.data
+            this.loadingRewards = false
+          }
+        })
+      },
+      getMentions(){
+        const data = {
+          route: 'api/commonData/getMentions',
+          params: {}
+        }
+
+        http.get(data).then(response => {
+        let {data} = response;
+
+          if (data.success) {
+            this.mentions = data.data
+          }
+        })
+      },
+      getPostulations(){
+        const data = {
+          route: 'api/postulaciones',
+          params: {
+            filters:{
+                "premioId": this.filter?.premio?.id ?? '',
+                "mencionId": this.filter?.mencion?.id ?? '',
+                "grupal": this.filter.grupal == 'Grupales' ? true : false,
+                "status":"Creado"
+            }
+          }
+        }
+        console.log(data);
+        http.post(data).then(response => {
+          let {data} = response
+
+          if (data.flag) {
+            console.log(data.data)
+            this.postulations = data.data
+            this.filter = {}
+          }
+        })
+      },
       getColor (status) {
         if (status == 'Rechazado') return 'red'
         else if (status === 'Validado') return 'success'
