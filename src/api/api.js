@@ -11,4 +11,8 @@ export default {
   get(data) {
     return http.get(`${API_URL}/${data.route}`);
   },
+
+  show(data) {
+    return http.get(`${API_URL}/${data.route}/${data.params.id}`);
+  },
 };

@@ -18,6 +18,7 @@
                     <v-img
                       class=""
                       src="../../assets/img/premiosNacionales.png"
+                      width="600"
                     ></v-img>
                   </v-col>
                 </v-row>

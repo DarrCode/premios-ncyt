@@ -16,7 +16,7 @@
       :search="search"
     >
 
-      <template v-slot:[`item.actions`]="{ item}">
+      <template v-slot:[`item.actions`]="{item}">
         <div class="d-flex">
 
           <v-simple-checkbox
@@ -28,8 +28,6 @@
             elevation="3"
             fab
             small
-            v-bind="attrs"
-            v-on="on"
             color="green darken-1"
           >
             <v-icon style="color:white">

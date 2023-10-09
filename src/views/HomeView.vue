@@ -113,7 +113,7 @@
                 </v-btn>
               </template>
               <v-list>
-                <v-list-item @click="viewDetailPostulate(item)">
+                <v-list-item @click="getDetailPostulate(item._id)">
                   <v-list-item-title>Ver detalles</v-list-item-title>
                   <v-list-item-action>
                     <v-icon  color="info">mdi-eye</v-icon>
@@ -177,7 +177,7 @@
         rewards: [],
         loadingRewards: false,
         mentions: [],
-        status: ['En espera', 'Rechazado', 'Revision'],
+        status: ['Creado', 'Aprobado', 'En espera', 'En revisión', 'Rechazado'],
         copyMentions: []
       }
     },
@@ -223,10 +223,9 @@
           }
         })
       },
+
       getPostulations(){
-        const filter = {
-          
-        }
+        //const filter = {}
         const data = {
           route: 'api/postulaciones',
           params: {
@@ -243,20 +242,39 @@
           let {data} = response
 
           if (data.flag) {
-            console.log(data.data)
             this.postulations = data.data
             this.filter = {}
           }
         })
       },
+
       getColor (status) {
         if (status == 'Rechazado') return 'red'
         else if (status === 'Validado') return 'success'
         else return 'primary'
       },
-      viewDetailPostulate() {
-        this.$refs['modalDetailsPostulate'].open()
-      }
+
+      getDetailPostulate(item){
+        const data = {
+          route: 'api/postulaciones',
+          params: {
+            id: item
+          }
+        }
+        try{
+          http.show(data).then(response => {
+            let {data} = response;
+              if (data.flag) {
+                console.log(data.data);
+                this.$refs['modalDetailsPostulate'].open(data.data)
+              }
+          }).catch(err => {
+            console.log("err", err);
+          })
+        }catch(error){
+          console.log(error);
+        }
+      },
     },
   }
 </script>

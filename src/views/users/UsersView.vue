@@ -32,7 +32,7 @@
       </v-data-table>
     </v-card>
 
-    <ModalCreateUser ref="createUser" />
+    <ModalCreateUser @getUsers="getUsers" ref="createUser" />
   </v-container>
   </template>
 
@@ -82,7 +82,7 @@
         let {data} = response;
 
           if (data.success) {
-            console.log(data);
+            this.userList = data.data
           }
         })
       }
