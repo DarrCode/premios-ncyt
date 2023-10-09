@@ -15,7 +15,7 @@
 					<v-icon>mdi-close</v-icon>
 				</v-btn>
 				<v-toolbar-title>
-					{{ detailPostulate.postulacion.menciones48.titulo }}
+					{{ detailPostulate?.postulacion?.menciones48?.titulo }}
 				</v-toolbar-title>
 				<v-spacer></v-spacer>
 				<v-btn
@@ -35,18 +35,18 @@
 			<v-container>
 				<v-row>
 					<v-col cols="12" md="4">
-						<PersonalData :personalDetail="this.detailPostulate.personal" />
+						<PersonalData :personalDetail="this.detailPostulate?.personal" />
 					</v-col>
 					<v-col cols="12" md="4">
-						<AcademicData :academicDetail="this.detailPostulate.personal"/> 
+						<AcademicData :academicDetail="this.detailPostulate?.personal"/> 
 					</v-col>
 					<v-col cols="12" md="4">
-						<LaborData :laborDetail="this.detailPostulate.personal"/>
+						<LaborData :laborDetail="this.detailPostulate?.personal"/>
 					</v-col>
 				</v-row>
 				<v-row>
 					<v-col cols="12">
-						<FilesData/>
+						<FilesData  :filePostulations="this.detailPostulate?.postulacion" />
 					</v-col>
 				</v-row>
 			</v-container>
@@ -68,7 +68,7 @@
 		data() {
 			return {
 				modal:false,
-				detailPostulate: []
+				detailPostulate: null
 			};
 		},
 

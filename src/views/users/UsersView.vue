@@ -24,7 +24,21 @@
       <v-data-table
         :headers="headers"
         :items="userList"
-        :search="search">
+        :search="search"
+      >
+        <template v-slot:[`item.createdAt`]="{ item }">
+          <v-chip
+            color="info"
+            dark
+            outlined
+          >
+            {{ moment(item.createdAt).format('DD/MM/YYYY h:mm a') }}
+          </v-chip>
+        </template>
+
+        <template v-slot:[`item.actions`]="{  }">
+          <v-btn small color="success" >Activo</v-btn>         
+        </template>
 
         <template v-slot:no-data>
           <h3 class="my-5">No hay usuarios registrados</h3>
@@ -61,7 +75,7 @@
           { text: 'ID', align: 'start', value: 'id' },
           { text: 'Nombre', align: 'center', value: 'name' },
           { text: 'Email', align: 'center', value: 'email' },
-          { text: 'Fecha de Creación', align: 'center', value: 'createdAt' },
+          { text: 'Fecha de creación', align: 'center', value: 'createdAt' },
           { text: 'Acciones', align: 'center', value: 'actions' },
         ]
       }

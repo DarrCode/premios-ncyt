@@ -3,7 +3,7 @@
         <v-dialog
             v-model="dialog"
             transition="dialog-bottom-transition"
-            max-width="700"
+            max-width="900"
         >
             <template v-slot:default="">
                 <v-card>
