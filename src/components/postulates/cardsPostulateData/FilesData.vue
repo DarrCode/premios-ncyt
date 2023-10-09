@@ -1,15 +1,13 @@
 <template>
   <v-card>
     <v-toolbar
-        color="primary"
-        dark
+      color="primary"
+      dark
     >
       <v-icon  class="mr-3">mdi-download-circle</v-icon>
       <v-toolbar-title>Recaudos</v-toolbar-title>
-
-      <v-spacer></v-spacer>
     </v-toolbar>
-    <v-data-table
+    <!-- <v-data-table
       :headers="headers"
       :items="desserts"
       :header-color="headerColor"
@@ -36,12 +34,35 @@
           </v-btn>
         </div>
       </template>
-    </v-data-table>
+    </v-data-table> -->
+    <v-list >
+ 
+        <v-divider></v-divider>
+
+        <v-list-item>
+          <!-- <v-list-item-avatar>
+            <v-checkbo :src="item.avatar"></v-checkbo>
+          </v-list-item-avatar> -->
+
+          <v-list-item-content>
+            <v-list-item-title> {{ this.files.cartaPostulacion }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+     
+    </v-list>
   </v-card>
 </template>
 
 <script>
   export default {
+    props: {
+      filePostulations: {
+        type: Object
+      }
+    },
+    mounted () {
+      console.log('filePostulations', this.filePostulations);
+    },    
     data () {
       return {
         search: '',
@@ -55,36 +76,7 @@
           { text: 'Acciones', value: 'actions' },
 
         ],
-        desserts: [
-          {
-            id: 1,
-            type: 'Cédula',
-            nameFile: 'Cédula.pdf',
-            dateUpload: '10/11/2023',
-            glutenfree: false,
-          },
-          {
-            id: 2,
-            type: 'Certificación Bancaria',
-            nameFile: 'Certificación-Bancaria.pdf',
-            dateUpload: '10/11/2023',
-            glutenfree: false,
-          },
-          {
-            id: 3,
-            type: 'Foto Carnet',
-            nameFile: 'Foto-Carnet.png',
-            dateUpload: '10/11/2023',
-            glutenfree: false,
-          },
-          {
-            id: 4,
-            type: 'Título Académico',
-            nameFile: 'Título-Académico.png',
-            dateUpload: '10/11/2023',
-            glutenfree: false,
-          },
-        ],
+        files: this.filePostulations,
       }
     },
   }

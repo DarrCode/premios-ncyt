@@ -5,7 +5,9 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 import http from '../http-common'
 import VueSession from 'vue-session'
+import moment from 'moment'
 
+Vue.prototype.moment = moment
 Vue.use(VueSession, { persist: true })
 
 Vue.config.productionTip = false

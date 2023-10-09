@@ -42,14 +42,15 @@
                 v-model="filter.mencion"
                 :items="copyMentions"
                 item-text="name"
-                label="Por mencion"
+                label="Por mención"
                 outlined
                 class="mx-2"
                 return-object
               ></v-select>
 
               <v-select
-              class="ml-2"
+                v-model="filter.status"
+                class="ml-2"
                 :items="status"
                 label="Estado"
                 outlined
@@ -69,6 +70,14 @@
                 </v-icon>
               </v-btn>
             </div>
+            <v-select v-model="selectedHeaders" :items="headers" label="Selecccionar columnas" multiple outlined return-object>
+            <template v-slot:selection="{ item, index }">
+              <v-chip v-if="index < 8">
+                <span>{{ item.text }}</span>
+              </v-chip>
+              <span v-if="index === 8" class="grey--text caption">(+{{ selectedHeaders.length - 8 }} others)</span>
+            </template>
+         </v-select>
           </v-card-text>
         </v-card>
       </v-col>
@@ -78,12 +87,66 @@
       <v-col cols="12" class="mt-5">
         <v-card>
           <v-data-table
-            :headers="headers"
+            :headers="showHeaders"
             :items="postulations"
-            class="elevation-1"
+            class="elevation-1 "
+            style="cursor: pointer"
           >
+            <template 
+              v-slot:[`item.menciones48.titulo`]="{ item }"
+            >
+              <span
+                class="d-inline-block text-truncate"
+                style="max-width: 100px"
+                :title="item.menciones48 ? item.menciones48.titulo : '-'"
+              >
+                {{ item.menciones48 ? item.menciones48.titulo : '-' }}
+              </span>
+            </template>
+            <template 
+              v-slot:[`item.menciones13.titulo`]="{ item }"
+            >
+            <span
+                class="d-inline-block text-truncate"
+                style="max-width: 100px"
+                :title="item.menciones13 ? item.menciones13.titulo : '-'"
+              >
+              {{ item.menciones13 ? item.menciones13.titulo : '-' }}
+              </span>
+            </template>
+            <template 
+              v-slot:[`item.menciones910.titulo`]="{ item }"
+            >
+            <span
+                class="d-inline-block text-truncate"
+                style="max-width: 100px"
+                :title="item.menciones910 ? item.menciones910.titulo : '-'"
+              >
+              {{ item.menciones910 ? item.menciones910.titulo : '-' }}
+              </span>
+            </template>
+            <template v-slot:[`item.menciones1113.titulo`]="{ item }">
+              <span
+                class="d-inline-block text-truncate"
+                style="max-width: 100px"
+                :title="item.menciones1113 ? item.menciones1113.titulo : '-'"
+              >
+              {{ item.menciones1113 ? item.menciones1113.titulo : '-' }}
+              </span>
+            </template>
             <template v-slot:[`item.grupal`]="{ item }">
               {{ item.grupal ? 'Grupal' : 'Individual' }}
+            </template>
+            <template 
+              v-slot:[`item.premioName`]="{ item }"
+            >
+            <span
+                class="d-inline-block text-truncate"
+                style="max-width: 100px"
+                :title="item.premioName"
+              >
+                {{ item.premioName }}
+              </span>
             </template>
             <template v-slot:[`item.status`]="{ item }">
               <v-chip
@@ -95,49 +158,35 @@
               </v-chip>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-              <v-menu
-              rounded="lg"
-              offset-y
-              small>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  v-on="on"
-                  icon
-                >
-                  <v-icon
-                    dark
-                  >
-                    mdi-dots-vertical
-                  </v-icon>
-                </v-btn>
-              </template>
-              <v-list>
-                <v-list-item @click="getDetailPostulate(item._id)">
-                  <v-list-item-title>Ver detalles</v-list-item-title>
-                  <v-list-item-action>
-                    <v-icon  color="info">mdi-eye</v-icon>
-                  </v-list-item-action>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-title>Observación</v-list-item-title>
-                  <v-list-item-action>
-                    <v-icon color="warning">mdi-square-edit-outline</v-icon>
-                  </v-list-item-action>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-title>Rechazar</v-list-item-title>
-                  <v-list-item-action>
-                    <v-icon color="error">mdi-delete-outline</v-icon>
-                  </v-list-item-action>
-                </v-list-item>
-              </v-list>
-            </v-menu>
+              <v-btn 
+                title="Visualizar postulacion"
+                @click="getDetailPostulate(item._id)"
+                icon 
+                color="primary"
+              >
+                <v-icon>mdi-eye-outline</v-icon>
+              </v-btn>
             </template>
           </v-data-table>
         </v-card>
       </v-col>
     </v-row>
+    <v-snackbar
+      v-model="message.snackbar"
+      :color="message.color"
+    >
+      {{ message.title }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          v-bind="attrs"
+          @click="message.snackbar = false"
+          icon
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
     <detailsPostulate ref="modalDetailsPostulate" />
   </v-container>
 </template>
@@ -150,16 +199,50 @@
     components: {
       detailsPostulate: () => import(/* webpackPrefetch: true */ '@/components/postulates/DetailsPostulate.vue'),
     },
+    created () {
+      this.headers = Object.values(this.headersMap);
+      this.selectedHeaders = this.headers;
+    },
+    computed: {
+      showHeaders () {
+        return this.headers.filter(s => this.selectedHeaders.includes(s));
+      }
+    },
     data (){
       return {
+        message: {
+          title: '',
+          color: '',
+          snackbar: false
+        },
+        selectedHeaders: [],
+        headers: [],
         dialog: false,
         search: '',
-        headers: [
+        headersMap: [
           {
-            text: 'Nombre',
+            text: 'titulo mención 48',
             align: 'start',
             sortable: false,
             value: 'menciones48.titulo',
+          },
+          {
+            text: 'titulo mención 13',
+            align: 'start',
+            sortable: false,
+            value: 'menciones13.titulo',
+          },
+          {
+            text: 'titulo mención 910',
+            align: 'start',
+            sortable: false,
+            value: 'menciones910.titulo',
+          },
+          {
+            text: 'titulo mención 1113',
+            align: 'start',
+            sortable: false,
+            value: 'menciones1113.titulo',
           },
           { text: 'Tipo participante', value: 'grupal' },
           { text: 'Premios', value: 'premioName' },
@@ -168,8 +251,7 @@
           { text: ' ', value: 'actions', align: 'center' },
 
         ],
-        postulations: [
-        ],
+        postulations: [],
         filter:{
           grupal: true,
         },
@@ -192,6 +274,7 @@
         this.copyMentions = this.mentions.filter((element) => element.premio_id === newvalue.id)
       },
     },
+    
     methods: {
       getRewards(){
         this.loadingRewards = true
@@ -223,7 +306,6 @@
           }
         })
       },
-
       getPostulations(){
         //const filter = {}
         const data = {
@@ -233,7 +315,7 @@
                 "premioId": this.filter?.premio?.id ?? '',
                 "mencionId": this.filter?.mencion?.id ?? '',
                 "grupal": this.filter.grupal == 'Grupales' ? true : false,
-                "status":"Creado"
+                "status": this.filter.status
             }
           }
         }
@@ -242,18 +324,20 @@
           let {data} = response
 
           if (data.flag) {
-            this.postulations = data.data
+            if (data.data.length > 0) {
+              this.postulations = data.data
+            }
             this.filter = {}
           }
         })
       },
-
       getColor (status) {
         if (status == 'Rechazado') return 'red'
-        else if (status === 'Validado') return 'success'
+        else if (status === 'En revisión') return 'warning'
+        else if (status === 'Aprobado') return 'success'
+        else if (status === 'En espera') return 'purple darken-3'
         else return 'primary'
       },
-
       getDetailPostulate(item){
         const data = {
           route: 'api/postulaciones',
@@ -265,8 +349,11 @@
           http.show(data).then(response => {
             let {data} = response;
               if (data.flag) {
-                console.log(data.data);
                 this.$refs['modalDetailsPostulate'].open(data.data)
+              } else {
+                this.message.snackbar = true,
+                this.message.title = data.error
+                this.message.color = 'red darken-3'
               }
           }).catch(err => {
             console.log("err", err);

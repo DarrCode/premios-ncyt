@@ -36,16 +36,13 @@
         type: Object,
       }
     },
-    data: () => ({
-    }),
-    
     computed: {
       items () {
         return [
           {
             icon: 'mdi-account',
             title: 'Nombre Completo:',
-            subtitle: this.personalDetail.firstName + ' ' + this.personalDetail.surname,
+            subtitle: this.personalDetail?.firstName + ' ' + this.personalDetail.surname,
           },
           {
             icon: 'mdi-card-account-details',

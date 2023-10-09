@@ -34,10 +34,6 @@
         type: Object
       }
     },
-
-    data: () => ({
-    }),
-
     computed:{
       items() {
         return [
