@@ -237,7 +237,6 @@
             }
           }
         }
-
         http.post(data).then(response => {
           let {data} = response
 
