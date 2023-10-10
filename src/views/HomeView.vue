@@ -302,20 +302,35 @@
           }
         })
       },
-      async getPostulations(){
-        //const filter = {}
+      getPostulations(){
+        let premioId = this.filter.premio.id ?? null
+        let mencionId = this.filter.mencion.id ?? null
+        let status = this.filter.status ?? null 
+
+        let grupal
+        if (this.filter.grupal == 'Grupales') {
+          grupal = true
+        } else if (this.filter.grupal == 'Individuales') {
+          grupal = false
+        } else {
+          grupal = null
+        }
+
+        const filters = {};
+
+        if (premioId !== null) filters.premioId = premioId
+        if (mencionId !== null) filters.mencionId = mencionId
+        if (grupal !== null) filters.grupal = grupal
+        if (status !== null) filters.status = status
+        
         const data = {
           route: 'api/postulaciones',
           params: {
-            filters:{
-                "premioId": this.filter?.premio?.id ?? '',
-                "mencionId": this.filter?.mencion?.id ?? '',
-                "grupal": this.filter.grupal == 'Grupales' ? true : false,
-                "status": this.filter.status
-            }
+            filters: filters
           }
         }
-        await http.post(data).then(response => {
+       
+        http.post(data).then(response => {
           this.loadingPostulations = true
           let {data} = response
 
@@ -349,12 +364,13 @@
         }
         try{
           http.show(data).then(response => {
-            let {data} = response;
+            let {data} = response
               if (data.flag) {
                 this.$refs['modalDetailsPostulate'].open(data.data)
                 this.message.snackbar = true,
                 this.message.title = 'Se ha cambiado el estatus a revisión'
                 this.message.color = 'warning'
+                this.postulations = []
               } else {
                 this.message.snackbar = true,
                 this.message.title = data.error
