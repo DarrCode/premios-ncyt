@@ -181,17 +181,8 @@
     >
       {{ message.title }}
 
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          v-bind="attrs"
-          @click="message.snackbar = false"
-          icon
-        >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </template>
     </v-snackbar>
-    <detailsPostulate ref="modalDetailsPostulate" />
+    <detailsPostulate ref="modalDetailsPostulate" @reloadPostulation="reloadPostulation()"/>
   </v-container>
 </template>
 
@@ -337,6 +328,11 @@
           }
         })
       },
+
+      reloadPostulation(){
+        this.postulations = []
+      },
+
       getColor (status) {
         if (status == 'Rechazado') return 'red'
         else if (status === 'En revisión') return 'warning'

@@ -20,14 +20,14 @@
 				<v-spacer></v-spacer>
 				<v-btn
 					color="success"
-					@click="changeStatus(this.detailPostulate._id, 'Verificado')"
+					@click="changeStatus(detailPostulate.postulacion._id, 'Verificado')"
 				>
 					VERIFICAR
 				</v-btn>
 				<v-btn
 					class="ml-2"
 					color="warning"
-					@click="changeStatus(this.detailPostulate._id, 'En espera')"
+					@click="changeStatus(detailPostulate.postulacion._id, 'En espera')"
 				>
 					En espera
 				</v-btn>
@@ -51,6 +51,22 @@
 				</v-row>
 			</v-container>
 		</v-card>
+		<v-snackbar
+      v-model="message.snackbar"
+      :color="message.color"
+    >
+      {{ message.title }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          v-bind="attrs"
+          @click="message.snackbar = false"
+          icon
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
 	</v-dialog>
 </template>
 
@@ -68,7 +84,12 @@
 		data() {
 			return {
 				modal:false,
-				detailPostulate: null
+				detailPostulate: null,
+				message: {
+          title: '',
+          color: '',
+          snackbar: false
+        }
 			};
 		},
 		methods: {
@@ -81,20 +102,21 @@
 				const data = {
           route: 'api/postulaciones/changeStatus',
           params: {
-            filters:{
-							'id': id,
-              'status': status,
-            }
+						'id': id,
+						'status': status,
           }
         }
-
         http.post(data).then(response => {
           let {data} = response
+					console.log("data",data);
 
           if (data.flag) {
-						this.modal = false
+						setTimeout(() => {
+							this.modal = false
+							this.$emit('reloadPostulation');
+						}, 4000);
 						this.message.snackbar = true,
-						this.message.title = data.message
+						this.message.title = data.msg
 						this.message.color = 'success'
           }
         })

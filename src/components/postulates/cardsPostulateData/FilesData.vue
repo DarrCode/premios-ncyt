@@ -136,6 +136,23 @@
           </v-btn>
         </v-list-item-action>
       </v-list-item>
+      <v-list-item v-if="menciones.documentoAcreditable">
+        <v-list-item-content>
+          <v-list-item-title> {{ menciones.documentoAcreditable ? 'Documento Acreditable' : ''}}</v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-action v-if="menciones.documentoAcreditable">
+          <v-btn
+            elevation="3"
+            fab
+            small
+            color="green darken-1"
+          >
+            <v-icon style="color:white">
+              mdi-download
+            </v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
     </v-list>
   </v-card>
 </template>
