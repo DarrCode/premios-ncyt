@@ -94,8 +94,6 @@
             icon: 'mdi-check-circle-outline'
           }
 
-          console.log("datita",data);
-
           this.$session.start()
           this.$session.set('accessToken', data.data.token)
 

@@ -44,9 +44,6 @@
 
 export default {
   name: 'AuthView',
-	mounted (){
-		console.log(this.$route);
-	},
   components: {
     FormLogin: () => import(/* webpackChunkName: "about" */ '@/components/auth/FormLogin.vue'),
   },

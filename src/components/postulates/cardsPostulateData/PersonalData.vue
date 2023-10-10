@@ -78,14 +78,9 @@
             icon: 'mdi-map-marker',
             title: 'Dirección:',
             subtitle: this.personalDetail.direction,
-          },
+          }
         ]
-      } 
-
-    },
-
-    mounted(){
-      console.log("prop", this.personalDetail);
+      }
     }
   }
 </script>

@@ -20,14 +20,14 @@
 				<v-spacer></v-spacer>
 				<v-btn
 					color="success"
-					@click="dialog = false"
+					@click="changeStatus(this.detailPostulate._id, 'Verificado')"
 				>
 					VERIFICAR
 				</v-btn>
 				<v-btn
 					class="ml-2"
 					color="warning"
-					@click="dialog = false"
+					@click="changeStatus(this.detailPostulate._id, 'En espera')"
 				>
 					En espera
 				</v-btn>
@@ -35,18 +35,18 @@
 			<v-container>
 				<v-row>
 					<v-col cols="12" md="4">
-						<PersonalData :personalDetail="this.detailPostulate?.personal" />
+						<PersonalData :personalDetail="detailPostulate?.personal" />
 					</v-col>
 					<v-col cols="12" md="4">
-						<AcademicData :academicDetail="this.detailPostulate?.personal"/> 
+						<AcademicData :academicDetail="detailPostulate?.personal"/> 
 					</v-col>
 					<v-col cols="12" md="4">
-						<LaborData :laborDetail="this.detailPostulate?.personal"/>
+						<LaborData :laborDetail="detailPostulate?.personal"/>
 					</v-col>
 				</v-row>
 				<v-row>
 					<v-col cols="12">
-						<FilesData  :filePostulations="this.detailPostulate?.postulacion" />
+						<FilesData  :filePostulations="detailPostulate?.postulacion" />
 					</v-col>
 				</v-row>
 			</v-container>
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+  import http from "@/api/api.js"
 
 	export default {
 		name: 'DetailsPostulate',
@@ -64,26 +65,40 @@
 			LaborData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/LaborData.vue'), 
 			FilesData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/FilesData.vue'),  
 		},
-
 		data() {
 			return {
 				modal:false,
 				detailPostulate: null
 			};
 		},
-
-		mounted() {        
-		},
-
 		methods: {
 			open(data){
 				this.modal = true
-				this.detailPostulate = data;
+				this.detailPostulate = data
+				console.log('this.detailPostulate', this.detailPostulate);
+			},
+			changeStatus(id, status) {
+				const data = {
+          route: 'api/postulaciones/changeStatus',
+          params: {
+            filters:{
+							'id': id,
+              'status': status,
+            }
+          }
+        }
+
+        http.post(data).then(response => {
+          let {data} = response
+
+          if (data.flag) {
+						this.modal = false
+						this.message.snackbar = true,
+						this.message.title = data.message
+						this.message.color = 'success'
+          }
+        })
 			}
-		},
+		}
 	};
 </script>
-
-<style lang="scss" scoped>
-
-</style>

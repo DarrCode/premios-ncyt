@@ -91,6 +91,7 @@
             :items="postulations"
             class="elevation-1 "
             style="cursor: pointer"
+            :loading="loadingPostulations"
           >
             <template 
               v-slot:[`item.menciones48.titulo`]="{ item }"
@@ -166,6 +167,9 @@
               >
                 <v-icon>mdi-eye-outline</v-icon>
               </v-btn>
+            </template>
+            <template v-slot:no-data>
+              <h4 class="my-5">No se encontraron registros</h4>
             </template>
           </v-data-table>
         </v-card>
@@ -260,7 +264,8 @@
         loadingRewards: false,
         mentions: [],
         status: ['Creado', 'Aprobado', 'En espera', 'En revisión', 'Rechazado'],
-        copyMentions: []
+        copyMentions: [],
+        loadingPostulations: false
       }
     },
     mounted (){
@@ -306,7 +311,7 @@
           }
         })
       },
-      getPostulations(){
+      async getPostulations(){
         //const filter = {}
         const data = {
           route: 'api/postulaciones',
@@ -319,7 +324,8 @@
             }
           }
         }
-        http.post(data).then(response => {
+        await http.post(data).then(response => {
+          this.loadingPostulations = true
           let {data} = response
 
           if (data.flag) {
@@ -327,6 +333,7 @@
               this.postulations = data.data
             }
             this.filter = {}
+            this.loadingPostulations = false
           }
         })
       },
@@ -349,6 +356,9 @@
             let {data} = response;
               if (data.flag) {
                 this.$refs['modalDetailsPostulate'].open(data.data)
+                this.message.snackbar = true,
+                this.message.title = 'Se ha cambiado el estatus a revisión'
+                this.message.color = 'warning'
               } else {
                 this.message.snackbar = true,
                 this.message.title = data.error
