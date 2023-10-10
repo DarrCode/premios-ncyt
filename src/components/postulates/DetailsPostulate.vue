@@ -20,14 +20,14 @@
 				<v-spacer></v-spacer>
 				<v-btn
 					color="success"
-					@click="changeStatus(this.detailPostulate._id, 'Verificado')"
+					@click="changeStatus(detailPostulate._id, 'Verificado')"
 				>
 					VERIFICAR
 				</v-btn>
 				<v-btn
 					class="ml-2"
 					color="warning"
-					@click="changeStatus(this.detailPostulate._id, 'En espera')"
+					@click="changeStatus(detailPostulate._id, 'En espera')"
 				>
 					En espera
 				</v-btn>
