@@ -19,6 +19,7 @@
             fab
             small
             color="green darken-1"
+            @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
           >
             <v-icon style="color:white">
               mdi-download
@@ -39,6 +40,7 @@
             fab
             small
             color="green darken-1"
+            @click="fileDownload(files.cedula, 'Cedula de Identidad')"
           >
             <v-icon style="color:white">
               mdi-download
@@ -47,9 +49,84 @@
         </v-list-item-action>
       </v-list-item>
       <v-divider v-if="files.cedula"></v-divider>
+      <v-list-item v-if="menciones.curriculum">
+        <v-list-item-content>
+          <v-list-item-title> {{ menciones.curriculum ? 'Curriculum' : '' }}</v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-action v-if="menciones.curriculum">
+          <v-btn
+            elevation="3"
+            fab
+            small
+            color="green darken-1"
+            @click="fileDownload(menciones.curriculum, 'Curriculum')"
+          >
+            <v-icon style="color:white">
+              mdi-download
+            </v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
+      <v-divider v-if="menciones.curriculum"></v-divider>
+      <v-list-item v-if="menciones.listaPostulados">
+        <v-list-item-content>
+          <v-list-item-title> {{ menciones.listaPostulados ? 'Lista de postulados' : '' }}</v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-action v-if="menciones.listaPostulados">
+          <v-btn
+            elevation="3"
+            fab
+            small
+            color="green darken-1"
+            @click="fileDownload(menciones.listaPructos, 'Lista de postulados')"
+          >
+            <v-icon style="color:white">
+              mdi-download
+            </v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
+      <v-list-item v-if="menciones.listaPructos">
+        <v-list-item-content>
+          <v-list-item-title> {{ menciones.listaPructos ? 'Lista de productos' : '' }}</v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-action v-if="menciones.listaPructos">
+          <v-btn
+            elevation="3"
+            fab
+            small
+            color="green darken-1"
+            @click="fileDownload(menciones.listaPructos, 'Lista de productos')"
+          >
+            <v-icon style="color:white">
+              mdi-download
+            </v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
+      <v-divider v-if="menciones.listaPructos"></v-divider>
+      <v-list-item v-if="menciones.titulo">
+        <v-list-item-content>
+          <v-list-item-title> {{ menciones.titulo ? 'Titulo' : '' }}</v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-action v-if="menciones.titulo">
+          <v-btn
+            elevation="3"
+            fab
+            small
+            color="green darken-1"
+            @click="fileDownload(menciones.titulo, 'Titulo')"
+          >
+            <v-icon style="color:white">
+              mdi-download
+            </v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
+      <v-divider v-if="menciones.titulo"></v-divider>
       <v-list-item v-if="menciones.PresentacionDescriptiva">
         <v-list-item-content>
-          <v-list-item-title> {{ menciones.PresentacionDescriptiva ? 'Presentacion descriptiva' : ''}}</v-list-item-title>
+          <v-list-item-title> {{ menciones.PresentacionDescriptiva ? 'Presentación descriptiva' : ''}}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-action v-if="menciones.PresentacionDescriptiva">
           <v-btn
@@ -57,6 +134,7 @@
             fab
             small
             color="green darken-1"
+            @click="fileDownload(menciones.PresentacionDescriptiva, 'Presentacion descriptiva')"
           >
             <v-icon style="color:white">
               mdi-download
@@ -75,6 +153,7 @@
             fab
             small
             color="green darken-1"
+            @click="fileDownload(menciones.copiaTrabajo, 'Copia de Trabajo')"
           >
             <v-icon style="color:white">
               mdi-download
@@ -93,6 +172,7 @@
               fab
               small
               color="green darken-1"
+              @click="fileDownload(menciones.documentExel, 'Documento Excel')"
             >
               <v-icon style="color:white">
                 mdi-download
@@ -111,6 +191,7 @@
             fab
             small
             color="green darken-1"
+            @click="fileDownload(menciones.videoDemostrativo, 'Video demostrativo')"
           >
             <v-icon style="color:white">
               mdi-download
@@ -121,7 +202,7 @@
       <v-divider v-if="menciones.videoDemostrativo"></v-divider>
       <v-list-item v-if="menciones.cartaAutorizacion">
         <v-list-item-content>
-          <v-list-item-title> {{ menciones.cartaAutorizacion ? 'Video demostrativo' : ''}}</v-list-item-title>
+          <v-list-item-title> {{ menciones.cartaAutorizacion ? 'Carta de autorización' : ''}}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-action v-if="menciones.cartaAutorizacion">
           <v-btn
@@ -129,6 +210,7 @@
             fab
             small
             color="green darken-1"
+            @click="fileDownload(menciones.cartaAutorizacion, 'Carta de autorizacion')"
           >
             <v-icon style="color:white">
               mdi-download
@@ -146,6 +228,7 @@
             fab
             small
             color="green darken-1"
+            @click="fileDownload(menciones.documentoAcreditable, 'Documento Acreditable')"
           >
             <v-icon style="color:white">
               mdi-download
@@ -164,7 +247,6 @@
         type: Object
       }
     },
-
     computed:{
       menciones(){
         let menciones = {}
@@ -186,5 +268,15 @@
         files: this.filePostulations,
       }
     },
+    methods: {
+      fileDownload(file, name) {
+        const url = window.URL.createObjectURL(new Blob([file]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `${name}.pdf`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      }
+    }
   }
 </script>
