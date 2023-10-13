@@ -241,6 +241,8 @@
 </template>
 
 <script>
+  import http from "@/api/api.js"
+
   export default {
     props: {
       filePostulations: {
@@ -271,17 +273,18 @@
     methods: {
       fileDownload(file, name) {
         const data = {
-          route: 'api/download',
+          route: 'api/postulaciones/download',
           params: {
-						'url': file,
+            'fileUrl': file
           }
+          
         }
         http.post(data).then(response => {
           let {data} = response
-
+          console.log("data", data);
           if (data.flag) {
 						let base64 = data.data
-            const fileName = data.message
+            const fileName = name
             const byteCharacters = atob(base64);
             const byteArrays = [];
 

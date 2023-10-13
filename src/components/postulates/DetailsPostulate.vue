@@ -27,7 +27,7 @@
 				<v-btn
 					class="ml-2"
 					color="warning"
-					@click="changeStatus(detailPostulate.postulacion._id, 'En espera')"
+					@click="openModalObservation()"
 				>
 					En espera
 				</v-btn>
@@ -65,6 +65,7 @@
         </v-btn>
       </template>
     </v-snackbar>
+		<ModalObservation :detailPostulate="detailPostulate" ref="modalObservation" @reloadPostulation="sendEvent()"/>
 	</v-dialog>
 </template>
 
@@ -77,7 +78,8 @@
 			PersonalData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/PersonalData.vue'),
 			AcademicData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/AcademicData.vue'), 
 			LaborData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/LaborData.vue'), 
-			FilesData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/FilesData.vue'),  
+			FilesData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/FilesData.vue'),
+			ModalObservation: () => import(/* webpackPrefetch: true */ '@/components/postulates/ModalObservation.vue'),  
 		},
 		data() {
 			return {
@@ -96,6 +98,15 @@
 				this.detailPostulate = data
 				console.log('this.detailPostulate', this.detailPostulate);
 			},
+
+			openModalObservation(){
+				this.$refs['modalObservation'].open();
+			},
+
+			sendEvent(){
+				this.$emit('reloadPostulation');
+			},
+
 			changeStatus(id, status) {
 				const data = {
           route: 'api/postulaciones/changeStatus',

@@ -1,0 +1,127 @@
+<template>
+  <div class="text-center">
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <v-card>
+        <v-card-title class="primary white--text">
+          <h3>Observación</h3>
+        </v-card-title>
+
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+                md="12"
+              >
+                <v-textarea
+                v-model="observation"
+                  outlined
+                  name="input-7-4"
+                  label="Observación"
+                  hint="Ingrese la observación"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="changeStatus(detailPostulate.postulacion._id, 'En espera', observation)"
+          >
+            {{detailPostulate.postulacion._id}}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+      <v-snackbar
+        v-model="message.snackbar"
+        :color="message.color"
+      >
+        {{ message.title }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            v-bind="attrs"
+            @click="message.snackbar = false"
+            icon
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </v-dialog>
+  </div>
+</template>
+
+<script>
+import http from "@/api/api.js"
+
+export default {
+  name: 'ModalObservation',
+
+  props:{
+    detailPostulate:{
+      type: Object
+    }
+  },
+
+  data() {
+    return {
+      dialog: false,
+      observation: '',
+      message: {
+        title: '',
+        color: '',
+        snackbar: false
+      }
+    };
+  },
+
+  mounted(){
+    console.log("detailProp",this.detailPostulate);
+  },
+
+  methods: {
+    open(){
+      this.dialog = true;
+    },
+
+    changeStatus(id, status, observation) {
+      const data = {
+        route: 'api/postulaciones/changeStatus',
+        params: {
+          'id': id,
+          'status': status,
+          'observation': observation
+        }
+      }
+      http.post(data).then(response => {
+        let {data} = response
+        console.log("data",data);
+
+        if (data.flag) {
+          setTimeout(() => {
+            this.dialog = false
+            this.$emit('reloadPostulation');
+          }, 4000);
+          this.message.snackbar = true,
+          this.message.title = data.msg
+          this.message.color = 'success'
+        }
+      })
+		}
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+
+</style>
