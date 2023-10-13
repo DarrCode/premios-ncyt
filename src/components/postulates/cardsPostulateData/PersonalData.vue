@@ -19,7 +19,7 @@
                 <v-icon class="my-auto" v-text="item.icon"></v-icon>
                 {{ item.title }}
               </v-list-item-title>
-              <v-list-item-subtitle class="ml-3 mt-1" v-html="item.subtitle"></v-list-item-subtitle>
+              <v-list-item-subtitle v-if="item.subtitle" class="ml-3 mt-1" v-html="item.subtitle"></v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-divider v-if="index + 1 < items.length" :key="index"></v-divider>
@@ -47,17 +47,12 @@
           {
             icon: 'mdi-card-account-details',
             title: 'Cédula:',
-            subtitle: this.personalDetail.identificationCard,
-          },
-          {
-            icon: 'mdi-badge-account',
-            title: 'Nacionalidad:',
-            subtitle: this.personalDetail.nationality,
+            subtitle: ` ${this.personalDetail.nationality} ${this.personalDetail.identificationCard}` ,
           },
           {
             icon: 'mdi-gender-male-female',
-            title: 'Sexo',
-            subtitle: this.personalDetail.sex,
+            title: 'Sexo:',
+            subtitle: this.personalDetail.sex =='M' ? 'Masculino' : 'Femenino'
           },
           {
             icon: 'mdi-calendar-account',

@@ -34,13 +34,11 @@
 			</v-toolbar>
 			<v-container>
 				<v-row>
-					<v-col cols="12" md="4">
+					<v-col cols="12" md="6">
 						<PersonalData :personalDetail="detailPostulate?.personal" />
 					</v-col>
-					<v-col cols="12" md="4">
-						<AcademicData :academicDetail="detailPostulate?.personal"/> 
-					</v-col>
-					<v-col cols="12" md="4">
+					<v-col cols="12" md="6">
+						<AcademicData class="mb-5" :academicDetail="detailPostulate?.personal"/> 
 						<LaborData :laborDetail="detailPostulate?.personal"/>
 					</v-col>
 				</v-row>

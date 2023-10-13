@@ -303,6 +303,7 @@
         })
       },
       getPostulations(){
+        this.postulations = []
         let premioId = this.filter.premio.id ?? null
         let mencionId = this.filter.mencion.id ?? null
         let status = this.filter.status ?? null 
@@ -338,10 +339,11 @@
             if (data.data.length > 0) {
               this.postulations = data.data
             }
-            this.filter = {}
             this.loadingPostulations = false
           }
         })
+        this.filter = {}
+
       },
 
       reloadPostulation(){

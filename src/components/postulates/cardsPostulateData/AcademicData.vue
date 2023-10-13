@@ -44,7 +44,12 @@
           {
             icon: 'mdi-school',
             title: 'Nivel Educativo:',
-            subtitle: this.academicDetail.educationLevelId,
+            subtitle: this.academicDetail.edicationalLevel.name,
+          },
+          {
+            icon: 'mdi-briefcase',
+            title: 'Profesión:',
+            subtitle: this.academicDetail.profession,
           },
         ]
       }
