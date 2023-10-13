@@ -270,12 +270,41 @@
     },
     methods: {
       fileDownload(file, name) {
-        const url = window.URL.createObjectURL(new Blob([file]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `${name}.pdf`); //or any other extension
-        document.body.appendChild(link);
-        link.click();
+        const data = {
+          route: 'api/download',
+          params: {
+						'url': file,
+          }
+        }
+        http.post(data).then(response => {
+          let {data} = response
+
+          if (data.flag) {
+						let base64 = data.data
+            const fileName = data.message
+            const byteCharacters = atob(base64);
+            const byteArrays = [];
+
+            for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+              const slice = byteCharacters.slice(offset, offset + 512);
+              const byteNumbers = new Array(slice.length);
+
+              for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+              }
+
+              const byteArray = new Uint8Array(byteNumbers);
+              byteArrays.push(byteArray);
+            }
+
+            const blob = new Blob(byteArrays, { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${fileName}.pdf`;
+            link.click();
+          }
+        })
       }
     }
   }
