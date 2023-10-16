@@ -35,10 +35,10 @@
           <v-btn
             color="primary"
             text
-            @click="changeStatus(detailPostulate.postulacion._id, 'En espera', observation)"
+            @click="changeStatus(detailPostulate.postulacion._id, status, observation)"
           >
-            {{detailPostulate.postulacion._id}}
-          </v-btn>
+            Enviar
+        </v-btn>
         </v-card-actions>
       </v-card>
       <v-snackbar
@@ -76,6 +76,7 @@ export default {
   data() {
     return {
       dialog: false,
+      status: '',
       observation: '',
       message: {
         title: '',
@@ -85,13 +86,10 @@ export default {
     };
   },
 
-  mounted(){
-    console.log("detailProp",this.detailPostulate);
-  },
-
   methods: {
-    open(){
+    open(status){
       this.dialog = true;
+      this.status = status
     },
 
     changeStatus(id, status, observation) {
@@ -110,6 +108,7 @@ export default {
         if (data.flag) {
           setTimeout(() => {
             this.dialog = false
+            this.observation = null
             this.$emit('reloadPostulation');
           }, 4000);
           this.message.snackbar = true,

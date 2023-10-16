@@ -7,32 +7,44 @@
 	>
 		<v-card>
 			<v-toolbar color="primary" dark>
-				<v-btn
-					icon
-					dark
-					@click="modal = false"
-				>
-					<v-icon>mdi-close</v-icon>
-				</v-btn>
 				<v-toolbar-title>
 					{{ detailPostulate?.postulacion?.menciones48?.titulo }}
 				</v-toolbar-title>
 				<v-spacer></v-spacer>
 				<v-btn
 					color="success"
+					class="ml-2"
 					@click="changeStatus(detailPostulate.postulacion._id, 'Verificado')"
 				>
 					VERIFICAR
 				</v-btn>
 				<v-btn
+					color="success"
+					class="ml-2"
+					@click="changeStatus(detailPostulate.postulacion._id, 'Validado')"
+				>
+					VALIDAR
+				</v-btn>
+				<v-btn
 					class="ml-2"
 					color="warning"
-					@click="openModalObservation()"
+					@click="openModalObservation('En espera')"
 				>
 					En espera
 				</v-btn>
+				<v-btn
+					class="ml-2"
+					color="red"
+					@click="openModalObservation('Rechazado')"
+				>
+					Rechazar
+				</v-btn>
 			</v-toolbar>
 			<v-container>
+				<div class="my-5">
+					<h2>{{ detailPostulate.premio.name }}</h2>
+					<h3>{{ detailPostulate.mencion.name }}</h3>
+				</div>
 				<v-row>
 					<v-col cols="12" md="6">
 						<PersonalData :personalDetail="detailPostulate?.personal" />
@@ -99,12 +111,13 @@
 				console.log('this.detailPostulate', this.detailPostulate);
 			},
 
-			openModalObservation(){
-				this.$refs['modalObservation'].open();
+			openModalObservation(status){
+				this.$refs['modalObservation'].open(status);
 			},
 
 			sendEvent(){
 				this.$emit('reloadPostulation');
+				this.modal = false
 			},
 
 			changeStatus(id, status) {
