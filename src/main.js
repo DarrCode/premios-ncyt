@@ -3,7 +3,6 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import vuetify from './plugins/vuetify'
-import http from '../http-common'
 import VueSession from 'vue-session'
 import moment from 'moment'
 
@@ -17,8 +16,9 @@ new Vue({
   router,
   vuetify,
   beforeCreate () {
-    if (this.$session.exists()) {
-      http.defaults.headers.common.Authorization = `bearer ${this.$session.get('accessToken')}`
+    console.log('token', sessionStorage.token);
+    if (!sessionStorage.token) {
+        this.$router.push('/login')
     }
   },
   render: h => h(App)

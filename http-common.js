@@ -4,7 +4,8 @@ const config = {
   baseURL: `${process.env.VUE_APP_API_URL}/`,
   headers: {
     'Content-type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest'
+    'X-Requested-With': 'XMLHttpRequest',
+    'Authorization': `bearer ${sessionStorage.token}` 
   }
 }
 

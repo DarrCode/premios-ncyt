@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Sidebar v-if="$store.state.authenticated" />
+    <Sidebar v-if="authenticated"/>
     <v-main>
       <!-- <Navbar v-if="authenticated" /> -->
         <router-view></router-view>
@@ -15,8 +15,10 @@ export default {
     Sidebar: () => import(/* webpackChunkName: "about" */ '@/components/ui/Sidebar.vue'),
     // Navbar: () => import(/* webpackChunkName: "about" */ '@/components/ui/Navbar.vue')
   },
-  data: () => ({
-    //
-  }),
+  computed: { 
+    authenticated () {
+      return this.$store.getters['Auth/authenticated']
+    }
+  },
 };
 </script>
