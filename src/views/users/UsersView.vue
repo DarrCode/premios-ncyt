@@ -36,8 +36,9 @@
           </v-chip>
         </template>
 
-        <template v-slot:[`item.actions`]="{  }">
-          <v-btn small color="success" >Activo</v-btn>         
+        <template v-slot:[`item.actions`]="{item}">
+          <v-btn v-if="item.active" small color="success" @click="changeUserStatus(item.id,false)">Activo</v-btn>         
+          <v-btn v-if="!item.active" small color="red" @click="changeUserStatus(item.id,true)">Inactivo</v-btn>         
         </template>
 
         <template v-slot:no-data>
@@ -45,7 +46,28 @@
         </template>
       </v-data-table>
     </v-card>
+    <div class="text-center ma-2">
+            <v-snackbar
+                v-model="snackbar"
+                :color="color"
+                shaped
+                >
+                <v-icon>{{ icon }}</v-icon>
 
+                {{ text }}
+
+                <template v-slot:action="{ attrs }">
+                    <v-btn
+                        color="white"
+                        text
+                        v-bind="attrs"
+                        @click="snackbar = false"
+                    >
+                        Cerrar
+                    </v-btn>
+                </template>
+            </v-snackbar>
+        </div>
     <ModalCreateUser @getUsers="getUsers" ref="createUser" />
   </v-container>
   </template>
@@ -61,6 +83,11 @@
     data () {
       return {
         search: '',
+        snackbar: false,
+        text: '',
+        color: '',
+        icon: '',
+        loading: false,
         userList: []
       }
     },
@@ -99,7 +126,40 @@
             this.userList = data.data
           }
         })
+      },
+
+      changeUserStatus(id, status){
+        const data = {
+          route: 'api/user/setStatus',
+          params: {
+            id,
+            active:status
+          }
+        }
+
+        http.post(data).then(response => {
+        let {data} = response;
+
+        if (data.success) {
+              this.snackbar = true
+              this.color = 'success'
+              this.icon = 'mdi-check-bold'
+              this.text = data.msg
+              this.loading = false
+              this.dialog = false
+
+              this.user = {}
+              this.getUsers();
+          }else{
+              this.snackbar = true
+              this.color = 'error'
+              this.icon = 'mdi-close-thick'
+              this.text = data.msg
+              this.loading = false
+          }
+        })
       }
+
     }
   }
 </script>
