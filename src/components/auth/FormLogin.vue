@@ -60,6 +60,9 @@
     </div>
 </template>
 <script>
+
+  import http from "@/api/api.js"
+
   export default {
     name: 'FormLogin',
     data () {
@@ -94,19 +97,25 @@
       }
 
       try {
-        let res = await this.$store.dispatch('Auth/login', data);
-        if(res && res.error){
-          this.snackbar = {
-            snackbar: true,
-            title: 'Error',
-            info: res.message, 
-            color: 'error', 
-            icon: 'mdi-close'
+        http.post(data).then(async res => {
+          if (res.data.success) {
+            sessionStorage.user = JSON.stringify(res.data.data)
+            sessionStorage.token = res.data.data.token
+            await this.$store.dispatch('Auth/login', res.data.data);
+            this.$router.push('/');
+            
+          }else {
+            this.snackbar = {
+              snackbar: true,
+              title: 'Error',
+              info: res.data.message, 
+              color: 'error', 
+              icon: 'mdi-close'
+            }
           }
-        }else{
-          await this.$router.push(this.$route.query.redirect || '/');
-        }
-
+        })
+        
+        
       } catch (error) {
         this.snackbar = {
           snackbar: true,

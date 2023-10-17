@@ -38,7 +38,7 @@
 
         <template v-slot:[`item.actions`]="{item}">
           <v-btn v-if="item.active" small color="success" @click="changeUserStatus(item.id,false)">Activo</v-btn>         
-          <v-btn v-if="!item.active" small color="red" @click="changeUserStatus(item.id,true)">Inactivo</v-btn>         
+          <v-btn v-if="!item.active" small class="white--text" color="red" @click="changeUserStatus(item.id,true)">Inactivo</v-btn>         
         </template>
 
         <template v-slot:no-data>

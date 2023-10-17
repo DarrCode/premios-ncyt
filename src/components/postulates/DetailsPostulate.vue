@@ -42,8 +42,8 @@
 			</v-toolbar>
 			<v-container>
 				<div class="my-5">
-					<h2>{{ detailPostulate.premio.name }}</h2>
-					<h3>{{ detailPostulate.mencion.name }}</h3>
+					<h2>Premio: {{ detailPostulate.premio.name }}</h2>
+					<h3>Mención: {{ detailPostulate.mencion.name }}</h3>
 				</div>
 				<v-row>
 					<v-col cols="12" md="6">

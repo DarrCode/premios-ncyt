@@ -18,11 +18,11 @@
             elevation="3"
             fab
             small
-            color="green darken-1"
+            color="primary"
             @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
           >
             <v-icon style="color:white">
-              mdi-download
+              mdi-eye
             </v-icon>
           </v-btn>
         </v-list-item-action>
@@ -39,11 +39,11 @@
             elevation="3"
             fab
             small
-            color="green darken-1"
+            color="primary"
             @click="fileDownload(files.cedula, 'Cedula de Identidad')"
           >
             <v-icon style="color:white">
-              mdi-download
+              mdi-eye
             </v-icon>
           </v-btn>
         </v-list-item-action>
@@ -58,11 +58,11 @@
             elevation="3"
             fab
             small
-            color="green darken-1"
+            color="primary"
             @click="fileDownload(menciones.curriculum, 'Curriculum')"
           >
             <v-icon style="color:white">
-              mdi-download
+              mdi-eye
             </v-icon>
           </v-btn>
         </v-list-item-action>
@@ -77,11 +77,11 @@
             elevation="3"
             fab
             small
-            color="green darken-1"
+            color="primary"
             @click="fileDownload(menciones.listaPructos, 'Lista de postulados')"
           >
             <v-icon style="color:white">
-              mdi-download
+              mdi-eye
             </v-icon>
           </v-btn>
         </v-list-item-action>
@@ -95,11 +95,11 @@
             elevation="3"
             fab
             small
-            color="green darken-1"
+            color="primary"
             @click="fileDownload(menciones.listaPructos, 'Lista de productos')"
           >
             <v-icon style="color:white">
-              mdi-download
+              mdi-eye
             </v-icon>
           </v-btn>
         </v-list-item-action>
@@ -114,11 +114,11 @@
             elevation="3"
             fab
             small
-            color="green darken-1"
+            color="primary"
             @click="fileDownload(menciones.titulo, 'Titulo')"
           >
             <v-icon style="color:white">
-              mdi-download
+              mdi-eye
             </v-icon>
           </v-btn>
         </v-list-item-action>
@@ -133,11 +133,11 @@
             elevation="3"
             fab
             small
-            color="green darken-1"
+            color="primary"
             @click="fileDownload(menciones.PresentacionDescriptiva, 'Presentacion descriptiva')"
           >
             <v-icon style="color:white">
-              mdi-download
+              mdi-eye
             </v-icon>
           </v-btn>
         </v-list-item-action>
@@ -152,11 +152,11 @@
             elevation="3"
             fab
             small
-            color="green darken-1"
+            color="primary"
             @click="fileDownload(menciones.copiaTrabajo, 'Copia de Trabajo')"
           >
             <v-icon style="color:white">
-              mdi-download
+              mdi-eye
             </v-icon>
           </v-btn>
           </v-list-item-action>
@@ -171,11 +171,11 @@
               elevation="3"
               fab
               small
-              color="green darken-1"
+              color="primary"
               @click="fileDownload(menciones.documentExel, 'Documento Excel')"
             >
               <v-icon style="color:white">
-                mdi-download
+                mdi-eye
               </v-icon>
             </v-btn>
           </v-list-item-action>
@@ -190,11 +190,11 @@
             elevation="3"
             fab
             small
-            color="green darken-1"
+            color="primary"
             @click="fileDownload(menciones.videoDemostrativo, 'Video demostrativo')"
           >
             <v-icon style="color:white">
-              mdi-download
+              mdi-eye
             </v-icon>
           </v-btn>
         </v-list-item-action>
@@ -209,11 +209,11 @@
             elevation="3"
             fab
             small
-            color="green darken-1"
+            color="primary"
             @click="fileDownload(menciones.cartaAutorizacion, 'Carta de autorizacion')"
           >
             <v-icon style="color:white">
-              mdi-download
+              mdi-eye
             </v-icon>
           </v-btn>
         </v-list-item-action>
@@ -227,11 +227,11 @@
             elevation="3"
             fab
             small
-            color="green darken-1"
+            color="primary"
             @click="fileDownload(menciones.documentoAcreditable, 'Documento Acreditable')"
           >
             <v-icon style="color:white">
-              mdi-download
+              mdi-eye
             </v-icon>
           </v-btn>
         </v-list-item-action>
@@ -271,7 +271,7 @@
       }
     },
     methods: {
-      fileDownload(file, name) {
+      fileDownload(file) {
         const data = {
           route: 'api/postulaciones/download',
           params: {
@@ -284,30 +284,22 @@
           console.log("data", data);
           if (data.flag) {
 						let base64 = data.data
-            const fileName = name
-            const byteCharacters = atob(base64);
-            const byteArrays = [];
 
-            for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-              const slice = byteCharacters.slice(offset, offset + 512);
-              const byteNumbers = new Array(slice.length);
-
-              for (let i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-              }
-
-              const byteArray = new Uint8Array(byteNumbers);
-              byteArrays.push(byteArray);
-            }
-
-            const blob = new Blob(byteArrays, { type: 'application/octet-stream' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `${fileName}.pdf`;
-            link.click();
+            const blob = this.base64ToBlob( base64, 'application/pdf' );
+            const url = URL.createObjectURL( blob );
+            const pdfWindow = window.open("");
+            pdfWindow.document.write("<iframe width='100%' height='100%' src='" + url + "'></iframe>");
           }
         })
+      },
+      base64ToBlob( base64, type = "application/octet-stream" ) {
+        const binStr = atob( base64 );
+        const len = binStr.length;
+        const arr = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          arr[ i ] = binStr.charCodeAt( i );
+        }
+        return new Blob( [ arr ], { type: type } );
       }
     }
   }

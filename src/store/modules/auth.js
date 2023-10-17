@@ -1,4 +1,3 @@
-import apiAuth from "../../api/api"
 
 export default {
   namespaced: true,
@@ -17,18 +16,9 @@ export default {
   },
   actions: {
     async login({ commit }, dataUser) {
-      const { data } = await apiAuth.post(dataUser)
 
-      if (data.success && data.data.user && data.data.token) {
-        commit('SET_USER', data.data)
-        sessionStorage.user = JSON.stringify(data.data)
-        sessionStorage.token = data.data.token
-      } else {
-        return {
-          error: true,
-          message: data.msg
-        }
-      }
+      commit('SET_USER', dataUser)
+      
     },
     logout({ commit }) {
       commit('SET_USER', null)

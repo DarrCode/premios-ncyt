@@ -8,5 +8,13 @@ const config = {
     'Authorization': `bearer ${sessionStorage.token}` 
   }
 }
+const instance = axios.create(config);
 
-export default axios.create(config)
+instance.interceptors.request.use(function (config) {
+  const token = sessionStorage.token;
+  config.headers.Authorization =  token ? `Bearer ${token}` : '';
+  return config;
+});
+
+
+export default instance;
