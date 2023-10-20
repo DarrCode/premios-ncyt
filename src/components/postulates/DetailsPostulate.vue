@@ -15,6 +15,7 @@
 					color="success"
 					class="ml-2"
 					@click="changeStatus(detailPostulate.postulacion._id, 'Verificado')"
+					v-if="$store.getters['Auth/role'] == 1 || $store.getters['Auth/role'] == 2 || $store.getters['Auth/role'] == 3"
 				>
 					VERIFICAR
 				</v-btn>
@@ -22,6 +23,7 @@
 					color="success"
 					class="ml-2"
 					@click="changeStatus(detailPostulate.postulacion._id, 'Validado')"
+					v-if="$store.getters['Auth/role'] == 3"
 				>
 					VALIDAR
 				</v-btn>
@@ -29,6 +31,7 @@
 					class="ml-2"
 					color="warning"
 					@click="openModalObservation('En espera')"
+					v-if="$store.getters['Auth/role'] == 1 || $store.getters['Auth/role'] == 2"
 				>
 					En espera
 				</v-btn>
@@ -36,6 +39,7 @@
 					class="ml-2"
 					color="red"
 					@click="openModalObservation('Rechazado')"
+					v-if="$store.getters['Auth/role'] == 1 || $store.getters['Auth/role'] == 3"
 				>
 					Rechazar
 				</v-btn>

@@ -16,23 +16,24 @@
       dense
       nav
     >
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          link
-          :to="item.path"
-        >
-        <!-- <span class="d-flex" v-if="item.roles.includes(role)"> -->
-
+        <v-list-item>
           <v-list-item-icon>
-            <v-icon color="primary">{{ item.icon }}</v-icon>
+            <v-icon color="primary">mdi-list-box-outline</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title>POSTULADOS</v-list-item-title>
           </v-list-item-content>
-        <!-- </span> -->
+        </v-list-item>
+        <v-list-item v-if="role == 1">
 
+          <v-list-item-icon>
+            <v-icon color="primary">mdi-account-group-outline</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>USUARIOS</v-list-item-title>
+          </v-list-item-content>
         </v-list-item>
       </v-list>
       <template v-slot:append>
@@ -51,8 +52,8 @@
       return {
 				drawer: true,
         items: [
-          { title: 'POSTULADOS', icon: 'mdi-list-box-outline', path: '/', roles: [1,2,3] },
-          { title: 'USUARIOS', icon: 'mdi-account-group-outline', path: '/users', roles: [5] },
+          { title: '', icon: '', path: '/', roles: [1,2,3] },
+          { title: 'USUARIOS', icon: '', path: '/users', roles: [5] },
         ],
       }
     },
