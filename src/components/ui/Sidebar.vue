@@ -16,7 +16,7 @@
       dense
       nav
     >
-        <v-list-item>
+        <v-list-item to="/">
           <v-list-item-icon>
             <v-icon color="primary">mdi-list-box-outline</v-icon>
           </v-list-item-icon>
@@ -25,7 +25,7 @@
             <v-list-item-title>POSTULADOS</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="role == 1">
+        <v-list-item to="/users" v-if="role == 1">
 
           <v-list-item-icon>
             <v-icon color="primary">mdi-account-group-outline</v-icon>
