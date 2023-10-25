@@ -254,7 +254,7 @@
         rewards: [],
         loadingRewards: false,
         mentions: [],
-        status: ['Creado', 'Aprobado', 'En espera', 'En revisión', 'Rechazado'],
+        status: ['Creado', 'Verificado', 'Validado', 'En espera', 'En revisión', 'Rechazado'],
         copyMentions: [],
         loadingPostulations: false
       }
