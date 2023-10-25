@@ -102,6 +102,8 @@
           { text: 'ID', align: 'start', value: 'id' },
           { text: 'Nombre', align: 'center', value: 'name' },
           { text: 'Email', align: 'center', value: 'email' },
+          { text: 'Premio', align: 'center', value: 'premioName' },
+          { text: 'Mencion', align: 'center', value: 'mencionName' },
           { text: 'Fecha de creación', align: 'center', value: 'createdAt' },
           { text: 'Acciones', align: 'center', value: 'actions' },
         ]
