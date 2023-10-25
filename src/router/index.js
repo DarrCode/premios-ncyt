@@ -22,7 +22,15 @@ const routes = [{
         name: 'users',
         beforeEnter: middleware.admin,
         component: () => import ( /* webpackChunkName: "about" */ '@/views/users/UsersView.vue')
+    },
+
+    {
+        path: '/jury',
+        name: 'jury',
+        //beforeEnter: middleware.jurado,
+        component: () => import ( /* webpackChunkName: "about" */ '@/views/jury/JuryView.vue')
     }
+
 ]
 
 const router = new VueRouter({

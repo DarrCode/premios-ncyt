@@ -25,8 +25,8 @@
             <v-list-item-title>POSTULADOS</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item to="/users" v-if="role == 1">
 
+        <v-list-item to="/users" v-if="role == 1">
           <v-list-item-icon>
             <v-icon color="primary">mdi-account-group-outline</v-icon>
           </v-list-item-icon>
@@ -35,6 +35,17 @@
             <v-list-item-title>USUARIOS</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item to="/jury">
+          <v-list-item-icon>
+            <v-icon color="primary">mdi-playlist-check</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>POSTULACIONES</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
       </v-list>
       <template v-slot:append>
         <div class="pa-2">
@@ -51,10 +62,6 @@
 		data () {
       return {
 				drawer: true,
-        items: [
-          { title: '', icon: '', path: '/', roles: [1,2,3] },
-          { title: 'USUARIOS', icon: '', path: '/users', roles: [5] },
-        ],
       }
     },
     computed: {
