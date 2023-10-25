@@ -16,7 +16,6 @@ new Vue({
   router,
   vuetify,
   beforeCreate () {
-    console.log('token', sessionStorage.token);
     if (!sessionStorage.token) {
         this.$router.push('/login')
     }
