@@ -107,14 +107,14 @@
             if(user.roleId == 1 || user.roleId == 2 || user.roleId == 3){
               this.$router.push('/postulados');
             }else if(user.roleId == 4){
-              this.$router.push('/jury');
+              this.$router.push('/jurado');
             }
             
           }else {
             this.snackbar = {
               snackbar: true,
               title: 'Error',
-              info: res.data.message, 
+              info: res.data.msg, 
               color: 'error', 
               icon: 'mdi-close'
             }

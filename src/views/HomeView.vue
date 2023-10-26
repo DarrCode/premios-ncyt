@@ -352,10 +352,11 @@
 
       getColor (status) {
         if (status == 'Rechazado') return 'red'
-        else if (status === 'En revisión') return 'warning'
-        else if (status === 'Aprobado') return 'success'
-        else if (status === 'En espera') return 'purple darken-3'
-        else return 'primary'
+        else if (status === 'En revisión') return 'purple darken-3'
+        else if (status === 'Verificado') return 'primary'
+        else if (status === 'Validado') return 'success'
+        else if (status === 'En espera') return 'warning'
+        else return 'teal'
       },
       getDetailPostulate(item){
         const data = {

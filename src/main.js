@@ -17,7 +17,7 @@ new Vue({
   vuetify,
   beforeCreate () {
     if (!sessionStorage.token) {
-        this.$router.push('/login')
+      this.$router.push('/login')
     }
   },
   render: h => h(App)
