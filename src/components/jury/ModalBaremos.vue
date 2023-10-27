@@ -17,13 +17,14 @@
               <span class="mt-4">Realizados en el país</span>
               
               <v-rating
-                v-model="rating.general"
+                v-model="rating.realizadoPais"
                 background-color="grey"
                 color="amber lighten-1"
                 hover
-                size="38"
+                size="33"
                 length="2"
                 value="0"
+                clearable
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -33,11 +34,36 @@
                 background-color="grey"
                 color="amber lighten-1"
                 hover
-                size="38"
+                size="33"
+                length="1"
+                value="0"
+              ></v-rating>
+            </v-expansion-panel-content>
+            <v-expansion-panel-content >
+              <span class="mt-4">Entre uno y tres trabajos realizados que cumplan con todos los requisitos exigidos</span>
+              <v-rating
+                v-model="rating.entreUnoTres"
+                background-color="grey"
+                color="amber lighten-1"
+                hover
+                size="33"
+                length="1"
+                value="0"
+              ></v-rating>
+            </v-expansion-panel-content>
+            <v-expansion-panel-content >
+              <span class="mt-4">Mas de tres trabajos realizados que cumplan todos los requisitos exigidos</span>
+              <v-rating
+                v-model="rating.entreMasTres"
+                background-color="grey"
+                color="amber lighten-1"
+                hover
+                size="33"
                 length="2"
                 value="0"
               ></v-rating>
             </v-expansion-panel-content>
+            
           </v-expansion-panel>
         </v-expansion-panels>
         
