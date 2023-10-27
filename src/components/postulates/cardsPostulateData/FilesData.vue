@@ -13,7 +13,7 @@
         <v-list-item-content>
           <v-list-item-title> {{ files.cartaPostulacion ? 'Carta de Postulación' : '' }}</v-list-item-title>
         </v-list-item-content>
-        <v-list-item-action v-if="files.cedula">
+        <v-list-item-action v-if="files.cartaPostulacion">
             <v-checkbox></v-checkbox>
         </v-list-item-action>
         <v-list-item-action v-if="files.cartaPostulacion">
@@ -23,7 +23,7 @@
             small
             color="primary"
             class="ml-5"
-            @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
+            @click="fileDownload(files.cartaPostulacion, 'Carta de Postulación')"
           >
             <v-icon style="color:white">
               mdi-eye
@@ -48,7 +48,7 @@
               fab
               small
               color="primary"
-              @click="fileDownload(files.cartaPostulacion)"
+              @click="fileDownload(files.cedula)"
             >
               <v-icon style="color:white">
                 mdi-eye
@@ -72,7 +72,7 @@
             fab
             small
             color="primary"
-            @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
+            @click="fileDownload(files.curriculum, 'Currículum')"
           >
             <v-icon style="color:white">
               mdi-eye
@@ -96,7 +96,7 @@
             fab
             small
             color="primary"
-            @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
+            @click="fileDownload(files.listaPostulados, 'Lista de postulados')"
           >
             <v-icon style="color:white">
               mdi-eye
@@ -118,7 +118,7 @@
               fab
               small
               color="primary"
-              @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
+              @click="fileDownload(files.listaPructos, 'Lista de productos')"
             >
               <v-icon style="color:white">
                 mdi-eye
@@ -131,7 +131,7 @@
 
       <v-list-item v-if="menciones.titulo">
         <v-list-item-content>
-          <v-list-item-title> {{ menciones.titulo ? 'Titulo' : '' }}</v-list-item-title>
+          <v-list-item-title> {{ menciones.titulo ? 'Título' : '' }}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-action v-if="menciones.titulo">
             <v-checkbox></v-checkbox>
@@ -142,7 +142,7 @@
               fab
               small
               color="primary"
-              @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
+              @click="fileDownload(files.titulo, 'Título')"
             >
               <v-icon style="color:white">
                 mdi-eye
@@ -166,7 +166,7 @@
               fab
               small
               color="primary"
-              @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
+              @click="fileDownload(files.PresentacionDescriptiva, 'Presentación descriptiva')"
             >
               <v-icon style="color:white">
                 mdi-eye
@@ -190,7 +190,7 @@
             fab
             small
             color="primary"
-            @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
+            @click="fileDownload(files.copiaTrabajo, 'Copia de Trabajo')"
           >
             <v-icon style="color:white">
               mdi-eye
@@ -214,7 +214,7 @@
             fab
             small
             color="primary"
-            @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
+            @click="fileDownload(files.documentExel, 'Documento Excel')"
           >
             <v-icon style="color:white">
               mdi-eye
@@ -227,7 +227,7 @@
 
       <v-list-item v-if="menciones.videoDemostrativo">
         <v-list-item-content>
-          <v-list-item-title> {{ menciones.videoDemostrativo ? 'Video demostrativo' : ''}}</v-list-item-title>
+          <v-list-item-title> {{ menciones.videoDemostrativo ? 'Vídeo demostrativo' : ''}}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-action v-if="menciones.videoDemostrativo">
           <v-checkbox></v-checkbox>
@@ -238,7 +238,7 @@
               fab
               small
               color="primary"
-              @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
+              @click="fileDownload(files.videoDemostrativo, 'Vídeo demostrativo')"
             >
               <v-icon style="color:white">
                 mdi-eye
@@ -262,7 +262,7 @@
               fab
               small
               color="primary"
-              @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
+              @click="fileDownload(files.cartaAutorizacion, 'Carta de autorización')"
             >
               <v-icon style="color:white">
                 mdi-eye
@@ -284,7 +284,7 @@
               fab
               small
               color="primary"
-              @click="fileDownload(files.cartaPostulacion, 'Carta de Postulacion')"
+              @click="fileDownload(files.documentoAcreditable, 'Documento Acreditable')"
             >
               <v-icon style="color:white">
                 mdi-eye
