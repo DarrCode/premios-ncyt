@@ -103,7 +103,6 @@ export default {
       }
       http.post(data).then(response => {
         let {data} = response
-        console.log("data",data);
 
         if (data.flag) {
           setTimeout(() => {

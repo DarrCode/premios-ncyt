@@ -12,6 +12,13 @@
 				</v-toolbar-title>
 				<v-spacer></v-spacer>
 				<v-btn
+					color="info"
+					class="ml-2"
+					@click="openModalRating(detailPostulate)"
+				>
+					Calificar
+				</v-btn>
+				<v-btn
 					color="success"
 					class="ml-2"
 					@click="changeStatus(detailPostulate.postulacion._id, 'Verificado')"
@@ -81,7 +88,15 @@
         </v-btn>
       </template>
     </v-snackbar>
-		<ModalObservation :detailPostulate="detailPostulate" ref="modalObservation" @reloadPostulation="sendEvent()"/>
+		<ModalObservation 
+			:detailPostulate="detailPostulate" 
+			ref="modalObservation" 
+			@reloadPostulation="sendEvent()"
+		/>
+		<ModalRating
+			ref="modalRating"
+			:premio="detailPostulate.premio"
+		/>
 	</v-dialog>
 </template>
 
@@ -91,11 +106,12 @@
 	export default {
 		name: 'DetailsPostulate',
 		components: {
-			PersonalData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/PersonalData.vue'),
-			AcademicData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/AcademicData.vue'), 
-			LaborData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/LaborData.vue'), 
-			FilesData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/FilesData.vue'),
-			ModalObservation: () => import(/* webpackPrefetch: true */ '@/components/postulates/ModalObservation.vue'),  
+			PersonalData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/PersonalData'),
+			AcademicData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/AcademicData'), 
+			LaborData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/LaborData'), 
+			FilesData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/FilesData'),
+			ModalObservation: () => import(/* webpackPrefetch: true */ '@/components/postulates/ModalObservation'),
+			ModalRating: () => import(/* webpackPrefetch: true */ '@/components/postulates/rating/ModalRating')
 		},
 		data() {
 			return {
@@ -112,18 +128,17 @@
 			open(data){
 				this.modal = true
 				this.detailPostulate = data
-				console.log('this.detailPostulate', this.detailPostulate);
 			},
-
 			openModalObservation(status){
 				this.$refs['modalObservation'].open(status);
 			},
-
+			openModalRating(){
+				this.$refs['modalRating'].open()
+			},
 			sendEvent(){
 				this.$emit('reloadPostulation');
 				this.modal = false
 			},
-
 			changeStatus(id, status) {
 				const data = {
           route: 'api/postulaciones/changeStatus',
@@ -134,7 +149,6 @@
         }
         http.post(data).then(response => {
           let {data} = response
-					console.log("data",data);
 
           if (data.flag) {
 						setTimeout(() => {

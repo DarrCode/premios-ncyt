@@ -304,8 +304,8 @@
       },
       getPostulations(){
         this.postulations = []
-        let premioId = this.filter.premio.id ?? null
-        let mencionId = this.filter.mencion.id ?? null
+        let premioId = this.filter?.premio?.id ?? null
+        let mencionId = this.filter?.mencion?.id ?? null
         let status = this.filter.status ?? null 
 
         let grupal
@@ -340,16 +340,19 @@
               this.postulations = data.data
             }
             this.loadingPostulations = false
+          } else{
+            this.message.snackbar = true,
+            this.message.title = 'Ha ocurrido un error, intente nuevamente'
+            this.message.color = 'red darken-3'
           }
+        }).catch((err) => {
+          console.log(err)
         })
         this.filter = {}
-
       },
-
       reloadPostulation(){
         this.postulations = []
       },
-
       getColor (status) {
         if (status == 'Rechazado') return 'red'
         else if (status === 'En revisión') return 'warning'
@@ -382,9 +385,9 @@
             console.log("err", err);
           })
         }catch(error){
-          console.log(error);
+          console.log(error)
         }
-      },
-    },
+      }
+    }
   }
 </script>
