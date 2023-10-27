@@ -66,7 +66,7 @@
 
             <template v-slot:[`item.status`]="{ item }">
               <v-chip
-                :color="getColor(item.status)"
+                color="success"
                 dark
                 outlined
               >
@@ -163,8 +163,7 @@ export default {
 
   methods: {
     index(){
-      const user = this.$store.getters['Auth/user']
-      console.log("user", user);
+      const user = this.$store.getters['Auth/user'].user
       let premioId = user.premioId ?? null
       let mencionId = user.mencionId ?? null
       let status = 'Validado'
@@ -182,7 +181,11 @@ export default {
         }
       }
 
-      http.post(data)
+      http.post(data).then(response => {
+        if(response.data){
+          this.postulations = response.data.data
+        }
+      })
     }
   },
 };
