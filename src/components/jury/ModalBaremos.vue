@@ -1,18 +1,42 @@
 <template>
   <v-dialog
     v-model="dialog"
-    width="1000"
+    width="700"
   >
     <v-card>
       <v-card-title class="primary white--text">
         <h3>Calificar</h3>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="py-5">
         <v-expansion-panels>
           <v-expansion-panel>
-            <v-expansion-panel-header> General</v-expansion-panel-header>
-            <v-expansion-panel-content>
-              Realizados en el país
+            <v-expansion-panel-header> 
+              <h3>General</h3>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content >
+              <span class="mt-4">Realizados en el país</span>
+              
+              <v-rating
+                v-model="rating.general"
+                background-color="grey"
+                color="amber lighten-1"
+                hover
+                size="38"
+                length="2"
+                value="0"
+              ></v-rating>
+            </v-expansion-panel-content>
+            <v-expansion-panel-content >
+              <span class="mt-4">Cooperación internacional</span>
+              <v-rating
+                v-model="rating.cooperation"
+                background-color="grey"
+                color="amber lighten-1"
+                hover
+                size="38"
+                length="2"
+                value="0"
+              ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -54,31 +78,29 @@ import http from "@/api/api.js"
 
 export default {
   name: 'ModalObservation',
-
   props:{
     detailPostulate:{
       type: Object
     }
   },
-
   data() {
     return {
       dialog: false,
-      status: '',
-      observation: '',
+      rating: {
+        general: 0,
+        cooperation: 0
+      },
       message: {
         title: '',
         color: '',
         snackbar: false
       }
-    };
+    }
   },
-
   methods: {
     open(){
       this.dialog = true
     },
-
     changeStatus(id, status, observation) {
       const data = {
         route: 'api/postulaciones/changeStatus',
@@ -107,3 +129,16 @@ export default {
   }
 }
 </script>
+<style>
+  .v-expansion-panel-header{
+    font-size: 20px;
+  }
+  .v-expansion-panel-content {
+    font-size: 18px;
+  }
+  .v-expansion-panel-content__wrap {
+    display: flex;
+    justify-content: space-between;
+
+  }
+</style>

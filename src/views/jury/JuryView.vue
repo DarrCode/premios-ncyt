@@ -83,6 +83,13 @@
               >
                 <v-icon>mdi-eye-outline</v-icon>
               </v-btn>
+              <v-btn
+                color="info"
+                class="ml-2"
+                @click="openModalRating()"
+              >
+                Calificar
+              </v-btn>
             </template>
 
             <template v-slot:no-data>
@@ -92,6 +99,9 @@
         </v-card>
       </v-col>
     </v-row>
+    <ModalRating
+			ref="modalRating"
+		/>
   </v-container>
 </template>
 
@@ -100,14 +110,15 @@ import http from "@/api/api.js"
 
 export default {
   name: 'PremiosNcytJuryView',
-
+  components: {
+			ModalRating: () => import(/* webpackPrefetch: true */ '@/components/jury/ModalBaremos')
+  },
   data() {
     return {
       postulations: [],
       loadingPostulations: false
-    };
+    }
   },
-
   computed: {
     header() {
       return [
@@ -150,18 +161,17 @@ export default {
         { text: ' ', 
           value: 'actions', 
           align: 'center' 
-        },
+        }
       ]
-    },
-  
+    }
   },
-
   mounted() {
     this.index()
-    
   },
-
   methods: {
+    openModalRating(){
+      this.$refs['modalRating'].open()
+    },
     index(){
       const user = this.$store.getters['Auth/user'].user
       let premioId = user.premioId ?? null
@@ -187,10 +197,7 @@ export default {
         }
       })
     }
-  },
-};
+  }
+}
 </script>
 
-<style lang="scss" scoped>
-
-</style>

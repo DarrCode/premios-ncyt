@@ -12,13 +12,6 @@
 				</v-toolbar-title>
 				<v-spacer></v-spacer>
 				<v-btn
-					color="info"
-					class="ml-2"
-					@click="openModalRating(detailPostulate)"
-				>
-					Calificar
-				</v-btn>
-				<v-btn
 					color="success"
 					class="ml-2"
 					@click="changeStatus(detailPostulate.postulacion._id, 'Verificado')"
@@ -93,10 +86,6 @@
 			ref="modalObservation" 
 			@reloadPostulation="sendEvent()"
 		/>
-		<ModalRating
-			ref="modalRating"
-			:premio="detailPostulate.premio"
-		/>
 	</v-dialog>
 </template>
 
@@ -111,7 +100,6 @@
 			LaborData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/LaborData'), 
 			FilesData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/FilesData'),
 			ModalObservation: () => import(/* webpackPrefetch: true */ '@/components/postulates/ModalObservation'),
-			ModalRating: () => import(/* webpackPrefetch: true */ '@/components/postulates/rating/ModalRating')
 		},
 		data() {
 			return {
@@ -153,7 +141,7 @@
           if (data.flag) {
 						setTimeout(() => {
 							this.modal = false
-							this.$emit('reloadPostulation');
+							this.$emit('reloadPostulation')
 						}, 4000);
 						this.message.snackbar = true,
 						this.message.title = data.msg
@@ -162,5 +150,5 @@
         })
 			}
 		}
-	};
+	}
 </script>
