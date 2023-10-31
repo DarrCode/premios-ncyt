@@ -8,7 +8,7 @@
       <v-toolbar-title>Recaudos</v-toolbar-title>
     </v-toolbar>
   
-    <v-list >
+    <!-- <v-list >
       <v-list-item v-if="files.cartaPostulacion">
         <v-list-item-content>
           <v-list-item-title> {{ files.cartaPostulacion ? 'Carta de Postulación' : '' }}</v-list-item-title>
@@ -292,7 +292,7 @@
             </v-btn>
         </v-list-item-action>
       </v-list-item>
-    </v-list>
+    </v-list> -->
   </v-card>
 </template>
 

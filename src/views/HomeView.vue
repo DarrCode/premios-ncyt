@@ -267,7 +267,7 @@
     },
     watch: {
       'filter.premio' (newvalue) {
-        this.copyMentions = this.mentions.filter((element) => element.premio_id === newvalue.id)
+        this.copyMentions = this.mentions.filter((element) => element.premio_id === newvalue?.id)
       },
     },
     

@@ -46,15 +46,15 @@
 			</v-toolbar>
 			<v-container>
 				<div class="my-5">
-					<h2>Premio: {{ detailPostulate.premio.name }}</h2>
-					<h3>Mención: {{ detailPostulate.mencion.name }}</h3>
+					<h2>Premio: {{ detailPostulate?.premio?.name }}</h2>
+					<h3>Mención: {{ detailPostulate?.mencion?.name }}</h3>
 				</div>
 				<v-row>
 					<v-col cols="12" md="6">
 						<PersonalData :personalDetail="detailPostulate?.personal" />
 					</v-col>
 					<v-col cols="12" md="6">
-						<AcademicData class="mb-5" :academicDetail="detailPostulate?.personal"/> 
+						<AcademicData class="mb-5" :academicDetail="detailPostulate ? detailPostulate.personal : null"/> 
 						<LaborData :laborDetail="detailPostulate?.personal"/>
 					</v-col>
 				</v-row>
@@ -101,6 +101,7 @@
 			return {
 				modal:false,
 				detailPostulate: null,
+				files: [],
 				message: {
           title: '',
           color: '',
@@ -110,9 +111,12 @@
 		},
 		methods: {
 			open(data){
+				console.log("data", data);
 				this.modal = true
 				this.detailPostulate = data
-				console.log('this.detailPostulate', this.detailPostulate);
+				if(data && data.postulacion._id){
+					this.getFiles(data.postulacion._id)
+				}
 			},
 
 			openModalObservation(status){
@@ -146,6 +150,23 @@
 						this.message.color = 'success'
           }
         })
+			},
+
+			getFiles(id){
+				console.log("id", id);
+				/* const data = {
+					route: 'api/postulaciones',
+					params: {
+						'id': id
+					}
+				}
+
+				http.get(data).then(response => {
+          let {data} = response
+          if (data.flag) {
+						this.files = data.data
+          }
+        }) */
 			}
 		}
 	};
