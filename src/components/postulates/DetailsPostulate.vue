@@ -60,7 +60,7 @@
 				</v-row>
 				<v-row>
 					<v-col cols="12">
-						<FilesData  :filePostulations="detailPostulate?.postulacion" />
+						<FilesData :filePostulations="files" />
 					</v-col>
 				</v-row>
 			</v-container>
@@ -111,7 +111,6 @@
 		},
 		methods: {
 			open(data){
-				console.log("data", data);
 				this.modal = true
 				this.detailPostulate = data
 				if(data && data.postulacion._id){
@@ -138,7 +137,6 @@
         }
         http.post(data).then(response => {
           let {data} = response
-					console.log("data",data);
 
           if (data.flag) {
 						setTimeout(() => {
@@ -153,12 +151,8 @@
 			},
 
 			getFiles(id){
-				console.log("id", id);
-				/* const data = {
-					route: 'api/postulaciones',
-					params: {
-						'id': id
-					}
+				const data = {
+					route: `api/postulaciones/getFiles/${id}`,
 				}
 
 				http.get(data).then(response => {
@@ -166,7 +160,7 @@
           if (data.flag) {
 						this.files = data.data
           }
-        }) */
+        })
 			}
 		}
 	};
