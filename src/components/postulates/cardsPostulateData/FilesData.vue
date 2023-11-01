@@ -7,13 +7,14 @@
       <v-icon  class="mr-3">mdi-download-circle</v-icon>
       <v-toolbar-title>Recaudos</v-toolbar-title>
     </v-toolbar>
-    <v-list>
+    <v-list v-if="checkList.length">
       <v-list-item v-for="(file, index) in filePostulations" :key="index">
         <v-list-item-content>
           <v-list-item-title> {{ file.name }}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-action>
-            <v-checkbox></v-checkbox>
+            <v-checkbox v-model="checkList[index].checked" @change="checkFile(index, $event)"
+            ></v-checkbox>
         </v-list-item-action>
         <v-list-item-action>
           <v-btn
@@ -41,11 +42,39 @@
     props: {
       filePostulations: {
         type: Array
+      },
+      checkedList: {
+        type: Array
       }
     },
     data () {
       return {
+        checkList: []
       }
+    },
+    watch:{
+      filePostulations: function() { 
+        this.checkList = [];
+        if (this.checkedList.length) {
+          this.checkList = [...this.checkedList]
+        } else {
+          for (const index in this.filePostulations) {
+            this.checkList.push({index, checked:false})
+          }
+        }
+        
+      }
+    },
+
+    mounted(){
+      this.checkList = [];
+      if (this.checkedList.length) {
+          this.checkList = [...this.checkedList]
+        } else {
+          for (const index in this.filePostulations) {
+            this.checkList.push({index, checked:false})
+          }
+        }
     },
 
     methods: {
@@ -87,6 +116,12 @@
           arr[ i ] = binStr.charCodeAt( i );
         }
         return new Blob( [ arr ], { type: type } );
+      },
+
+      checkFile(index, checked = false) {
+        let searchCheck = this.checkList.find(val => val.index == index)
+        searchCheck ? searchCheck.checked = checked : null
+        this.$emit('changeCheckList', this.checkList)
       }
     }
   }

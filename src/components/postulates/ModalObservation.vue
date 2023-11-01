@@ -76,6 +76,7 @@ export default {
   data() {
     return {
       dialog: false,
+      checkList: [],
       status: '',
       observation: '',
       message: {
@@ -87,28 +88,30 @@ export default {
   },
 
   methods: {
-    open(status){
+    open(status, checkList){
       this.dialog = true;
       this.status = status
+      this.checkList = checkList
     },
 
     changeStatus(id, status, observation) {
       const data = {
         route: 'api/postulaciones/changeStatus',
         params: {
-          'id': id,
-          'status': status,
-          'observation': observation
+          id,
+          status,
+          observation,
+          checkList: this.checkList
         }
       }
       http.post(data).then(response => {
         let {data} = response
-        console.log("data",data);
 
         if (data.flag) {
           setTimeout(() => {
             this.dialog = false
             this.observation = null
+            this.checkList = [];
             this.$emit('reloadPostulation');
           }, 4000);
           this.message.snackbar = true,

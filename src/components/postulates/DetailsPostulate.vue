@@ -64,8 +64,8 @@
 					</v-col>
 				</v-row>
 				<v-row>
-					<v-col cols="12">
-						<FilesData :filePostulations="files" />
+					<v-col cols="12" v-if="files.length">
+						<FilesData :filePostulations="files" :checkedList="checkList" @changeCheckList="receiveCheck"/>
 					</v-col>
 				</v-row>
 			</v-container>
@@ -107,6 +107,7 @@
 			return {
 				modal:false,
 				detailPostulate: null,
+				checkList: [],
 				colsData: [],
 				files: [],
 				message: {
@@ -118,9 +119,9 @@
 		},
 		methods: {
 			open(data){
-				console.log('data', data);
 				this.modal = true
-				this.detailPostulate = data
+				this.detailPostulate = data;
+				this.checkList = this.detailPostulate.postulacion.checkList ? this.detailPostulate.postulacion.checkList : [];
 
 				if(data.postulacion && data.postulacion.menciones48){
 					this.colsData = [
@@ -164,7 +165,7 @@
 			},
 
 			openModalObservation(status){
-				this.$refs['modalObservation'].open(status);
+				this.$refs['modalObservation'].open(status, this.checkList);
 			},
 
 			sendEvent(){
@@ -176,16 +177,19 @@
 				const data = {
           route: 'api/postulaciones/changeStatus',
           params: {
-						'id': id,
-						'status': status,
+						id,
+						status,
+						checkList: this.checkList
           }
         }
+
         http.post(data).then(response => {
           let {data} = response
 
           if (data.flag) {
 						setTimeout(() => {
 							this.modal = false
+							this.files = [];
 							this.$emit('reloadPostulation');
 						}, 4000);
 						this.message.snackbar = true,
@@ -206,6 +210,10 @@
 						this.files = data.data
           }
         })
+			},
+
+			receiveCheck(checkList){
+				this.checkList = checkList
 			}
 		}
 	};
