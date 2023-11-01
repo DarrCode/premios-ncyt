@@ -59,6 +59,11 @@
 					</v-col>
 				</v-row>
 				<v-row>
+					<v-col cols="12" v-if="!detailPostulate?.postulacion.menciones13">
+						<PostulateData :colsData="colsData" />
+					</v-col>
+				</v-row>
+				<v-row>
 					<v-col cols="12">
 						<FilesData :filePostulations="files" />
 					</v-col>
@@ -95,12 +100,14 @@
 			AcademicData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/AcademicData.vue'), 
 			LaborData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/LaborData.vue'), 
 			FilesData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/FilesData.vue'),
-			ModalObservation: () => import(/* webpackPrefetch: true */ '@/components/postulates/ModalObservation.vue'),  
+			ModalObservation: () => import(/* webpackPrefetch: true */ '@/components/postulates/ModalObservation.vue'),
+			PostulateData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/PostulateData.vue'), 
 		},
 		data() {
 			return {
 				modal:false,
 				detailPostulate: null,
+				colsData: [],
 				files: [],
 				message: {
           title: '',
@@ -111,8 +118,46 @@
 		},
 		methods: {
 			open(data){
+				console.log('data', data);
 				this.modal = true
 				this.detailPostulate = data
+
+				if(data.postulacion && data.postulacion.menciones48){
+					this.colsData = [
+						{
+							icon: 'mdi-rename',
+							title: 'Título:',
+							subtitle: data.postulacion.menciones48.titulo,
+						},
+						{
+							icon: 'mdi-text-box',
+							title: 'Resumen:',
+							subtitle: data.postulacion.menciones48.resumen
+						},
+					]
+				} else if(data.postulacion && data.postulacion.menciones910){
+					this.colsData = [
+						{
+							icon: 'mdi-rename',
+							title: 'Nombre Propuesta:',
+							subtitle: data.postulacion.menciones910.nombrePropuesta
+						},
+						{
+							icon: 'mdi-text-box',
+							title: 'Descripción:',
+							subtitle: data.postulacion.menciones910.descripcion
+						}
+					]
+				} else if(data.postulacion && data.postulacion.menciones1113){
+					this.colsData = [
+						{
+							icon: 'mdi-text-box',
+							title: 'Descripción:',
+							subtitle: data.postulacion.menciones1113.descripcion
+						}
+					]
+				}
+
 				if(data && data.postulacion._id){
 					this.getFiles(data.postulacion._id)
 				}
