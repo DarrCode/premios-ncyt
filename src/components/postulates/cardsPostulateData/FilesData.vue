@@ -13,7 +13,9 @@
           <v-list-item-title> {{ file.name }}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-action>
-            <v-checkbox v-model="checkList[index].checked" @change="checkFile(index, $event)"
+            <v-checkbox 
+              v-model="checkList[index].checked" @change="checkFile(index, $event, 'local')"
+              :disabled="checkList[index].disabled"
             ></v-checkbox>
         </v-list-item-action>
         <v-list-item-action>
@@ -49,17 +51,27 @@
     },
     data () {
       return {
-        checkList: []
+        checkList: [],
+        disabled: false
       }
     },
     watch:{
       filePostulations: function() { 
         this.checkList = [];
         if (this.checkedList.length) {
-          this.checkList = [...this.checkedList]
+          this.checkList = this.checkedList.map(val => {
+            if (val.checked) {
+              return {
+                ...val,
+                disabled:true
+              }
+            }
+            return val
+          });
         } else {
           for (const index in this.filePostulations) {
             this.checkList.push({index, checked:false})
+            this.disabled = false
           }
         }
         
@@ -69,12 +81,21 @@
     mounted(){
       this.checkList = [];
       if (this.checkedList.length) {
-          this.checkList = [...this.checkedList]
+          this.checkList = this.checkedList.map(val => {
+            if (val.checked) {
+              return {
+                ...val,
+                disabled:true
+              }
+            }
+            return val
+          });
         } else {
           for (const index in this.filePostulations) {
             this.checkList.push({index, checked:false})
+            this.disabled = false
           }
-        }
+        }        
     },
 
     methods: {
@@ -118,10 +139,13 @@
         return new Blob( [ arr ], { type: type } );
       },
 
-      checkFile(index, checked = false) {
+      checkFile(index, checked = false, local) {
+        if(local === 'local'){
+          this.checkList[index].checked = false
+        }
         let searchCheck = this.checkList.find(val => val.index == index)
         searchCheck ? searchCheck.checked = checked : null
-        this.$emit('changeCheckList', this.checkList)
+        this.$emit('changeCheckList', this.checkList) 
       }
     }
   }

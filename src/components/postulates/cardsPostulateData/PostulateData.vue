@@ -17,7 +17,7 @@
                 <v-icon class="my-auto" v-text="item.icon"></v-icon>
                 {{ item.title }}
               </v-list-item-title>
-              <v-list-item-subtitle class="ml-3" v-html="item.subtitle"></v-list-item-subtitle>
+              <v-list-item-subtitle class="ml-3" style="white-space: normal;" v-html="item.subtitle"></v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-divider v-if="index + 1 < colsData.length" :key="index"></v-divider>

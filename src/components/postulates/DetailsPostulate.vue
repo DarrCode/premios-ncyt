@@ -7,6 +7,13 @@
 	>
 		<v-card>
 			<v-toolbar color="primary" dark>
+				<v-btn
+					icon
+					dark
+					@click="changeStatus(detailPostulate.postulacion._id, 'En espera', 'close')"
+				>
+					<v-icon>mdi-close</v-icon>
+				</v-btn>
 				<v-toolbar-title>
 					{{ detailPostulate?.postulacion?.menciones48?.titulo }}
 				</v-toolbar-title>
@@ -48,6 +55,8 @@
 				<div class="my-5">
 					<h2>Premio: {{ detailPostulate?.premio?.name }}</h2>
 					<h3>Mención: {{ detailPostulate?.mencion?.name }}</h3>
+					<h5>ID Postulación: {{ detailPostulate?.postulacion?._id }}</h5>
+					<h5>ID Usuario: {{ detailPostulate?.postulacion?.userId }}</h5>
 				</div>
 				<v-row>
 					<v-col cols="12" md="6">
@@ -173,7 +182,7 @@
 				this.modal = false
 			},
 
-			changeStatus(id, status) {
+			changeStatus(id, status, typeButton = 'other') {
 				const data = {
           route: 'api/postulaciones/changeStatus',
           params: {
@@ -185,16 +194,21 @@
 
         http.post(data).then(response => {
           let {data} = response
-
           if (data.flag) {
-						setTimeout(() => {
+						if(typeButton === 'close'){
 							this.modal = false
 							this.files = [];
 							this.$emit('reloadPostulation');
-						}, 4000);
-						this.message.snackbar = true,
-						this.message.title = data.msg
-						this.message.color = 'success'
+						} else {
+							setTimeout(() => {
+								this.modal = false
+								this.files = [];
+								this.$emit('reloadPostulation');
+							}, 4000);
+							this.message.snackbar = true,
+							this.message.title = data.msg
+							this.message.color = 'success'
+						}
           }
         })
 			},
