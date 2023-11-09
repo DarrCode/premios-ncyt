@@ -8,6 +8,15 @@
 		<v-card>
 			<v-toolbar color="primary" dark>
 				<v-btn
+					v-if="detailPostulate.postulacion.status == 'Verificado'"
+					icon
+					dark
+					@click="closeModal()"
+				>
+					<v-icon>mdi-close</v-icon>
+				</v-btn>
+				<v-btn
+					v-else
 					icon
 					dark
 					@click="changeStatus(detailPostulate.postulacion._id, 'En espera', 'close')"
@@ -215,6 +224,12 @@
 			sendEvent(){
 				this.$emit('reloadPostulation');
 				this.modal = false
+			},
+
+			closeModal () {
+				this.modal = false
+				this.files = [];
+				this.$emit('reloadPostulation');
 			},
 
 			changeStatus(id, status, typeButton = 'other') {
