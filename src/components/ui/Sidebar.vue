@@ -36,7 +36,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item to="/jurado" v-if="role == 4">
+        <v-list-item to="/jurado" v-if="role == 1 || role == 4">
           <v-list-item-icon>
             <v-icon color="primary">mdi-playlist-check</v-icon>
           </v-list-item-icon>

@@ -47,7 +47,7 @@
 					class="ml-2"
 					color="amber"
 					@click="openModalRating(detailPostulate.postulacion._id, detailPostulate.postulacion.score)"
-					v-if="$store.getters['Auth/role'] == 4"
+					v-if="$store.getters['Auth/role'] == 1 || $store.getters['Auth/role'] == 4"
 				>
 					Evaluar
 					<v-icon class="ml-2">mdi-star-check-outline</v-icon>
