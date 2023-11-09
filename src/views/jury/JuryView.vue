@@ -2,6 +2,16 @@
   <v-container>
     <v-row>
       <v-col cols="12" class="mt-5">
+        <v-card-title>
+          <v-select
+          v-model="status"
+          :items="selectStatus"
+          outlined
+          label="Estado de las postulaciones"
+          @change="index"
+        ></v-select>
+
+        </v-card-title>
         <v-card>
           <v-data-table
             :headers="header"
@@ -73,35 +83,59 @@
                 {{ item.status }}
               </v-chip>
             </template>
-
-            <template v-slot:[`item.actions`]="{ item }">
-              <v-btn 
-                title="Visualizar postulacion"
-                @click="getDetailPostulate(item._id)"
-                icon 
-                color="primary"
+            <template v-slot:[`item.total`]="{ item }">
+              <v-chip
+                :color="levelRating(item.total)"
+                dark
+                outlined
               >
-                <v-icon>mdi-eye-outline</v-icon>
-              </v-btn>
-              <v-btn
-                color="info"
-                class="ml-2"
-                @click="openModalRating()"
-              >
-                Calificar
-              </v-btn>
+              {{ item.total ?? 0 }} puntos
+              </v-chip>
             </template>
 
+            <template v-slot:[`item.actions`]="{ item }">
+              <div class="d-flex">
+                <v-btn 
+                  title="Visualizar postulación"
+                  @click="getDetailPostulate(item._id)"
+                  icon 
+                  color="primary"
+                >
+                  <v-icon>mdi-eye-outline</v-icon>
+                </v-btn>
+                <v-btn
+                  color="amber"
+                  class="ml-1"
+                  icon
+                  @click="openModalRating(item._id, item.score)"
+                  title="Evaluar"
+                >
+                  <v-icon>mdi-star-check-outline</v-icon>
+                </v-btn>
+              </div>
+            </template>
             <template v-slot:no-data>
               <h4 class="my-5">No se encontraron registros</h4>
             </template>
           </v-data-table>
         </v-card>
       </v-col>
+      <v-snackbar
+      v-model="message.snackbar"
+      :color="message.color"
+    >
+      {{ message.title }}
+
+    </v-snackbar>
     </v-row>
     <ModalRating
 			ref="modalRating"
+      @reloadPostulations="index"
 		/>
+    <detailsPostulate 
+      ref="modalDetailsPostulate" 
+      @reloadPostulation="index()"
+    />
   </v-container>
 </template>
 
@@ -111,41 +145,44 @@ import http from "@/api/api.js"
 export default {
   name: 'PremiosNcytJuryView',
   components: {
-			ModalRating: () => import(/* webpackPrefetch: true */ '@/components/jury/ModalBaremos')
+    detailsPostulate: () => import(/* webpackPrefetch: true */ '@/components/postulates/DetailsPostulate.vue'),
+		ModalRating: () => import(/* webpackPrefetch: true */ '@/components/jury/ModalBaremos')
   },
   data() {
     return {
       postulations: [],
-      loadingPostulations: false
+      loadingPostulations: false,
+      selectStatus: ['Validado', 'Evaluado'],
+      status: 'Validado',
+      message: {
+        title: '',
+        color: '',
+        snackbar: false
+      }
     }
   },
   computed: {
     header() {
       return [
         {
-          text: 'titulo mención 48',
+          text: 'Correo',
           align: 'start',
           sortable: false,
-          value: 'menciones48.titulo',
+          value: 'user.email',
         },
         {
-          text: 'titulo mención 13',
+          text: 'Cédula',
           align: 'start',
           sortable: false,
-          value: 'menciones13.titulo',
+          value: 'user.identificationCard',
         },
         {
-          text: 'titulo mención 910',
+          text: 'Observación',
           align: 'start',
           sortable: false,
-          value: 'menciones910.titulo',
+          value: 'observation',
         },
-        {
-          text: 'titulo mención 1113',
-          align: 'start',
-          sortable: false,
-          value: 'menciones1113.titulo',
-        },
+        
         { text: 'Tipo participante', 
           value: 'grupal' 
         },
@@ -155,8 +192,11 @@ export default {
         { text: 'Nominación', 
           value: 'mencionName' 
         },
-        { text: 'Estado', 
-          value: 'status' 
+        // { text: 'Estado', 
+        //   value: 'status' 
+        // },
+        { text: 'Total', 
+          value: 'total' 
         },
         { text: ' ', 
           value: 'actions', 
@@ -169,20 +209,56 @@ export default {
     this.index()
   },
   methods: {
-    openModalRating(){
-      this.$refs['modalRating'].open()
+    levelRating(total) { 
+      if (total <= 10 || total == undefined) {
+        return 'error'
+      } else if (total > 10 && total <= 15) {
+        return 'warning'
+      }  
+      return 'success'
+    },
+    openModalRating(postulationId, score){
+      this.$refs['modalRating'].open(postulationId, score)
+    },
+    getDetailPostulate(item){
+      const data = {
+        route: `api/postulaciones`,
+        params: {
+          id: item
+        }
+      }
+      http.showPostulateJurado(data).then(response => {
+        let {data} = response
+          if (data.flag) {
+            this.$refs['modalDetailsPostulate'].open(data.data)
+          } else {
+            this.message.snackbar = true,
+            this.message.title = data.error
+            this.message.color = 'red darken-3'
+          }
+      }).catch(err => {
+        console.log("err", err);
+      })
     },
     index(){
+      if (this.postulations.length > 0) {
+        this.message.snackbar = true
+        this.message.title = 'Operación exitosa!'
+        this.message.color = 'success'
+      }
+
+      this.loadingPostulations = true
+
       const user = this.$store.getters['Auth/user'].user
       let premioId = user.premioId ?? null
       let mencionId = user.mencionId ?? null
-      let status = 'Validado'
 
       const filters = {};
 
       if (premioId !== null) filters.premioId = premioId
       if (mencionId !== null) filters.mencionId = mencionId
-      if(status === 'Validado') filters.status = status
+      if(this.status === 'Validado') filters.status = this.status
+      if(this.status === 'Evaluado') filters.status = this.status
 
       const data = {
         route: 'api/postulaciones',
@@ -195,7 +271,9 @@ export default {
         if(response.data){
           this.postulations = response.data.data
         }
-      })
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => this.loadingPostulations = false)
     }
   }
 }

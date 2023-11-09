@@ -160,7 +160,7 @@
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-btn 
-                title="Visualizar postulacion"
+                title="Visualizar postulación"
                 @click="getDetailPostulate(item._id)"
                 icon 
                 color="primary"
@@ -182,7 +182,10 @@
       {{ message.title }}
 
     </v-snackbar>
-    <detailsPostulate ref="modalDetailsPostulate" @reloadPostulation="reloadPostulation()"/>
+    <detailsPostulate 
+      ref="modalDetailsPostulate" 
+      @reloadPostulation="reloadPostulation()"
+    />
   </v-container>
 </template>
 

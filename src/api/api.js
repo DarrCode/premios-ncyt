@@ -15,4 +15,7 @@ export default {
   show(data) {
     return http.get(`${API_URL}/${data.route}/${data.params.id}`);
   },
+  showPostulateJurado(data) {
+    return http.get(`${API_URL}/${data.route}/${data.params.id}?isJurado=${true}`);
+  },
 };

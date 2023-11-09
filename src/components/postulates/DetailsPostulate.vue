@@ -35,19 +35,37 @@
 				>
 					En espera
 				</v-btn>
+				
 				<v-btn
 					class="ml-2"
-					color="red"
+					color="amber"
+					@click="openModalRating(detailPostulate.postulacion._id, detailPostulate.postulacion.score)"
+					v-if="$store.getters['Auth/role'] == 4"
+				>
+					Evaluar
+					<v-icon class="ml-2">mdi-star-check-outline</v-icon>
+				</v-btn>
+				<v-btn
+					class="ml-2"
+					color="deep-purple darken-3"
+					@click="openModalChangeMencion(detailPostulate.postulacion._id, detailPostulate.postulacion.premioId)"
+					v-if="$store.getters['Auth/role'] == 4"
+				>
+					Cambiar mencion
+				</v-btn>
+				<v-btn
+					class="ml-2"
+					color="red darken-2"
 					@click="openModalObservation('Rechazado')"
-					v-if="$store.getters['Auth/role'] == 1 || $store.getters['Auth/role'] == 3"
+					v-if="$store.getters['Auth/role'] == 1 || $store.getters['Auth/role'] == 3 || $store.getters['Auth/role'] == 4"
 				>
 					Rechazar
 				</v-btn>
 			</v-toolbar>
 			<v-container>
 				<div class="my-5">
-					<h2>Premio: {{ detailPostulate.premio.name }}</h2>
-					<h3>Mención: {{ detailPostulate.mencion.name }}</h3>
+					<h2>Premio: {{ detailPostulate?.premio.name }}</h2>
+					<h3>Mención: {{ detailPostulate?.mencion.name }}</h3>
 				</div>
 				<v-row>
 					<v-col cols="12" md="6">
@@ -81,9 +99,16 @@
         </v-btn>
       </template>
     </v-snackbar>
+		<ModalRating
+			ref="modalRating"
+		/>
 		<ModalObservation 
 			:detailPostulate="detailPostulate" 
 			ref="modalObservation" 
+			@reloadPostulation="sendEvent()"
+		/>
+		<ModalChangeMencion 
+			ref="modalChangeMencion" 
 			@reloadPostulation="sendEvent()"
 		/>
 	</v-dialog>
@@ -100,6 +125,8 @@
 			LaborData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/LaborData'), 
 			FilesData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/FilesData'),
 			ModalObservation: () => import(/* webpackPrefetch: true */ '@/components/postulates/ModalObservation'),
+			ModalRating: () => import(/* webpackPrefetch: true */ '@/components/jury/ModalBaremos'),
+			ModalChangeMencion: () => import(/* webpackPrefetch: true */ '@/components/jury/ModalChangeMencion')
 		},
 		data() {
 			return {
@@ -110,7 +137,7 @@
           color: '',
           snackbar: false
         }
-			};
+			}
 		},
 		methods: {
 			open(data){
@@ -120,8 +147,11 @@
 			openModalObservation(status){
 				this.$refs['modalObservation'].open(status);
 			},
-			openModalRating(){
-				this.$refs['modalRating'].open()
+			openModalRating(postulationId, score){
+				this.$refs['modalRating'].open(postulationId, score)
+			},
+			openModalChangeMencion(postulationId, premioId){
+				this.$refs['modalChangeMencion'].open(postulationId, premioId)
 			},
 			sendEvent(){
 				this.$emit('reloadPostulation');

@@ -83,7 +83,7 @@ export default {
         color: '',
         snackbar: false
       }
-    };
+    }
   },
 
   methods: {
