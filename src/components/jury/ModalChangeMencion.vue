@@ -100,6 +100,10 @@ export default {
         let {data} = response
 
         if (data.flag) {
+          this.message.snackbar = true
+          this.message.title = 'Operación exitosa!'
+          this.message.color = 'success'
+          
           this.modal = false
           this.$emit('reloadPostulation')
           this.form = {}

@@ -241,11 +241,11 @@ export default {
       })
     },
     index(){
-      if (this.postulations.length > 0) {
-        this.message.snackbar = true
-        this.message.title = 'Operación exitosa!'
-        this.message.color = 'success'
-      }
+      // if (this.postulations.length > 0) {
+      //   this.message.snackbar = true
+      //   this.message.title = 'Operación exitosa!'
+      //   this.message.color = 'success'
+      // }
 
       this.loadingPostulations = true
 
