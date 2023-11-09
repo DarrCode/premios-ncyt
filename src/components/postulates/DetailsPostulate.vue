@@ -138,6 +138,7 @@
 			AcademicData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/AcademicData'), 
 			LaborData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/LaborData'), 
 			FilesData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/FilesData'),
+			PostulateData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/PostulateData'),
 			ModalObservation: () => import(/* webpackPrefetch: true */ '@/components/postulates/ModalObservation'),
 			ModalRating: () => import(/* webpackPrefetch: true */ '@/components/jury/ModalBaremos'),
 			ModalChangeMencion: () => import(/* webpackPrefetch: true */ '@/components/jury/ModalChangeMencion')
