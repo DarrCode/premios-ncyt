@@ -56,9 +56,9 @@
 					class="ml-2"
 					color="deep-purple darken-3"
 					@click="openModalChangeMencion(detailPostulate.postulacion._id, detailPostulate.postulacion.premioId)"
-					v-if="$store.getters['Auth/role'] == 4"
+					v-if="$store.getters['Auth/role'] == 1 || $store.getters['Auth/role'] == 4"
 				>
-					Cambiar mencion
+					Cambiar mención
 				</v-btn>
 				<v-btn
 					class="ml-2"
