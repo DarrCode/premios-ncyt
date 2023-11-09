@@ -42,7 +42,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>POSTULACIONES</v-list-item-title>
+            <v-list-item-title>CALIFICAR POSTULACIONES</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
