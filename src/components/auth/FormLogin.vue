@@ -102,13 +102,19 @@
             sessionStorage.user = JSON.stringify(res.data.data)
             sessionStorage.token = res.data.data.token
             await this.$store.dispatch('Auth/login', res.data.data);
-            this.$router.push('/');
+            let user = res.data.data.user
+
+            if(user.roleId == 1 || user.roleId == 2 || user.roleId == 3){
+              this.$router.push('/postulados');
+            }else if(user.roleId == 4){
+              this.$router.push('/jurado');
+            }
             
           }else {
             this.snackbar = {
               snackbar: true,
               title: 'Error',
-              info: res.data.message, 
+              info: res.data.msg, 
               color: 'error', 
               icon: 'mdi-close'
             }

@@ -160,7 +160,7 @@
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-btn 
-                title="Visualizar postulacion"
+                title="Visualizar postulación"
                 @click="getDetailPostulate(item._id)"
                 icon 
                 color="primary"
@@ -182,7 +182,10 @@
       {{ message.title }}
 
     </v-snackbar>
-    <detailsPostulate ref="modalDetailsPostulate" @reloadPostulation="reloadPostulation()"/>
+    <detailsPostulate 
+      ref="modalDetailsPostulate" 
+      @reloadPostulation="reloadPostulation()"
+    />
   </v-container>
 </template>
 
@@ -304,8 +307,8 @@
       },
       getPostulations(){
         this.postulations = []
-        let premioId = this.filter.premio.id ?? null
-        let mencionId = this.filter.mencion.id ?? null
+        let premioId = this.filter?.premio?.id ?? null
+        let mencionId = this.filter?.mencion?.id ?? null
         let status = this.filter.status ?? null 
 
         let grupal
@@ -340,22 +343,26 @@
               this.postulations = data.data
             }
             this.loadingPostulations = false
+          } else{
+            this.message.snackbar = true,
+            this.message.title = 'Ha ocurrido un error, intente nuevamente'
+            this.message.color = 'red darken-3'
           }
+        }).catch((err) => {
+          console.log(err)
         })
         this.filter = {}
-
       },
-
       reloadPostulation(){
         this.postulations = []
       },
-
       getColor (status) {
         if (status == 'Rechazado') return 'red'
-        else if (status === 'En revisión') return 'warning'
-        else if (status === 'Aprobado') return 'success'
-        else if (status === 'En espera') return 'purple darken-3'
-        else return 'primary'
+        else if (status === 'En revisión') return 'purple darken-3'
+        else if (status === 'Verificado') return 'primary'
+        else if (status === 'Validado') return 'success'
+        else if (status === 'En espera') return 'warning'
+        else return 'teal'
       },
       getDetailPostulate(item){
         const data = {
@@ -382,9 +389,9 @@
             console.log("err", err);
           })
         }catch(error){
-          console.log(error);
+          console.log(error)
         }
-      },
-    },
+      }
+    }
   }
 </script>

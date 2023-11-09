@@ -22,3 +22,9 @@ export default {
   },
 };
 </script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+*, body, p, a, h1, h2, h3 {
+  font-family: 'Nunito', sans-serif;
+}
+</style>

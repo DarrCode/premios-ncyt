@@ -42,11 +42,29 @@
 				>
 					En espera
 				</v-btn>
+				
 				<v-btn
 					class="ml-2"
-					color="red"
+					color="amber"
+					@click="openModalRating(detailPostulate.postulacion._id, detailPostulate.postulacion.score)"
+					v-if="$store.getters['Auth/role'] == 4"
+				>
+					Evaluar
+					<v-icon class="ml-2">mdi-star-check-outline</v-icon>
+				</v-btn>
+				<v-btn
+					class="ml-2"
+					color="deep-purple darken-3"
+					@click="openModalChangeMencion(detailPostulate.postulacion._id, detailPostulate.postulacion.premioId)"
+					v-if="$store.getters['Auth/role'] == 4"
+				>
+					Cambiar mencion
+				</v-btn>
+				<v-btn
+					class="ml-2"
+					color="red darken-2"
 					@click="openModalObservation('Rechazado')"
-					v-if="$store.getters['Auth/role'] == 1 || $store.getters['Auth/role'] == 3"
+					v-if="$store.getters['Auth/role'] == 1 || $store.getters['Auth/role'] == 3 || $store.getters['Auth/role'] == 4"
 				>
 					Rechazar
 				</v-btn>
@@ -95,7 +113,18 @@
         </v-btn>
       </template>
     </v-snackbar>
-		<ModalObservation :detailPostulate="detailPostulate" ref="modalObservation" @reloadPostulation="sendEvent()"/>
+		<ModalRating
+			ref="modalRating"
+		/>
+		<ModalObservation 
+			:detailPostulate="detailPostulate" 
+			ref="modalObservation" 
+			@reloadPostulation="sendEvent()"
+		/>
+		<ModalChangeMencion 
+			ref="modalChangeMencion" 
+			@reloadPostulation="sendEvent()"
+		/>
 	</v-dialog>
 </template>
 
@@ -105,12 +134,13 @@
 	export default {
 		name: 'DetailsPostulate',
 		components: {
-			PersonalData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/PersonalData.vue'),
-			AcademicData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/AcademicData.vue'), 
-			LaborData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/LaborData.vue'), 
-			FilesData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/FilesData.vue'),
-			ModalObservation: () => import(/* webpackPrefetch: true */ '@/components/postulates/ModalObservation.vue'),
-			PostulateData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/PostulateData.vue'), 
+			PersonalData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/PersonalData'),
+			AcademicData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/AcademicData'), 
+			LaborData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/LaborData'), 
+			FilesData: () => import(/* webpackPrefetch: true */ '@/components/postulates/cardsPostulateData/FilesData'),
+			ModalObservation: () => import(/* webpackPrefetch: true */ '@/components/postulates/ModalObservation'),
+			ModalRating: () => import(/* webpackPrefetch: true */ '@/components/jury/ModalBaremos'),
+			ModalChangeMencion: () => import(/* webpackPrefetch: true */ '@/components/jury/ModalChangeMencion')
 		},
 		data() {
 			return {
@@ -124,7 +154,7 @@
           color: '',
           snackbar: false
         }
-			};
+			}
 		},
 		methods: {
 			open(data){
@@ -172,11 +202,15 @@
 					this.getFiles(data.postulacion._id)
 				}
 			},
-
 			openModalObservation(status){
 				this.$refs['modalObservation'].open(status, this.checkList);
 			},
-
+			openModalRating(postulationId, score){
+				this.$refs['modalRating'].open(postulationId, score)
+			},
+			openModalChangeMencion(postulationId, premioId){
+				this.$refs['modalChangeMencion'].open(postulationId, premioId)
+			},
 			sendEvent(){
 				this.$emit('reloadPostulation');
 				this.modal = false
@@ -230,5 +264,5 @@
 				this.checkList = checkList
 			}
 		}
-	};
+	}
 </script>

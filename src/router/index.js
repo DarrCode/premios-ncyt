@@ -6,7 +6,7 @@ import middleware from './middleware'
 Vue.use(VueRouter)
 
 const routes = [{
-        path: '/',
+        path: '/postulados',
         name: 'home',
         component: HomeView,
         beforeEnter: middleware.verificador,
@@ -18,11 +18,19 @@ const routes = [{
             import ( /* webpackChunkName: "about" */ '@/views/auth/LoginView.vue')
     },
     {
-        path: '/users',
+        path: '/usuarios',
         name: 'users',
         beforeEnter: middleware.admin,
         component: () => import ( /* webpackChunkName: "about" */ '@/views/users/UsersView.vue')
+    },
+
+    {
+        path: '/jurado',
+        name: 'jury',
+        beforeEnter: middleware.jurado,
+        component: () => import ( /* webpackChunkName: "about" */ '@/views/jury/JuryView.vue')
     }
+
 ]
 
 const router = new VueRouter({

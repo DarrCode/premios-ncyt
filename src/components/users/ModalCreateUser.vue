@@ -79,6 +79,30 @@
                                         outlined
                                     ></v-text-field>
                                 </v-col>
+
+                                <v-col v-if="user.role.id == 4" cols="12" md="6">
+                                    <v-select
+                                        v-model="user.premio"
+                                        :items="premios"
+                                        item-text="name"
+                                        label="Premio"
+                                        outlined
+                                        class="mx-2"
+                                        return-object
+                                    ></v-select>
+                                </v-col>
+
+                                <v-col v-if="user.role.id == 4" cols="12" md="6">
+                                    <v-select
+                                        v-model="user.mencion"
+                                        :items="copyMenciones"
+                                        item-text="name"
+                                        label="Mención"
+                                        outlined
+                                        class="mx-2"
+                                        return-object
+                                    ></v-select>
+                                </v-col>
                             </v-row>
                         </v-container>
                     </v-card-text>
@@ -136,17 +160,32 @@ export default {
             icon: '',
             loading: false,
             roles: [],
+            premios: [],
+            menciones: [],
+            copyMenciones: [],
             user:{
                 role: '',
+                premio: '',
+                mencion: '',
                 name: '',
                 email: '',
                 password: ''
             }
         };
     },
-
+    watch: {
+      'user.premio' (newvalue) {
+        if (newvalue && newvalue != '') {
+            this.copyMenciones = this.menciones.filter((element) => element.premio_id === newvalue.id)
+        } else {
+            this.copyMenciones = []
+        }
+      },
+    },
     mounted() {
         this.getRoles();
+        this.getPremios();
+        this.getMenciones();
     },
 
     methods: {
@@ -172,12 +211,40 @@ export default {
             })
         },
 
+        getPremios(){
+            const data = {
+                route: 'api/commonData/getRewards',
+                params: {}
+            }
+            http.get(data).then(response => {
+                let {data} = response;
+                if (data.success) {
+                    this.premios = data.data
+                }
+            })
+        },
+
+        getMenciones(){
+            const data = {
+                route: 'api/commonData/getMentions',
+                params: {}
+            }
+            http.get(data).then(response => {
+                let {data} = response;
+                if (data.success) {
+                    this.menciones = data.data
+                }
+            })
+        },
+
         createUser(){
             this.loading = true
             const data = {
                 route: 'api/user',
                 params: {
                     roleId: this.user.role.id,
+                    premioId: this.user.premio ? this.user.premio.id : null,
+                    mencionId: this.user.mencion ? this.user.mencion.id : null,
                     name: this.user.name,
                     email: this.user.email,
                     password: this.user.password
@@ -194,7 +261,14 @@ export default {
                         this.loading = false
                         this.dialog = false
 
-                        this.user = {}
+                        this.user = {
+                            role: '',
+                            premio: '',
+                            mencion: '',
+                            name: '',
+                            email: '',
+                            password: ''
+                        }
                         this.$emit('getUsers');
                     }else{
                         this.snackbar = true
