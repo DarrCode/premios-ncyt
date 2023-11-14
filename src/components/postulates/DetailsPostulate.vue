@@ -8,6 +8,15 @@
 		<v-card>
 			<v-toolbar color="primary" dark>
 				<v-btn
+					v-if="detailPostulate.postulacion.status == 'Verificado'"
+					icon
+					dark
+					@click="closeModal()"
+				>
+					<v-icon>mdi-close</v-icon>
+				</v-btn>
+				<v-btn
+					v-else
 					icon
 					dark
 					@click="changeStatus(detailPostulate.postulacion._id, 'En espera', 'close')"
@@ -56,9 +65,9 @@
 					class="ml-2"
 					color="deep-purple darken-3"
 					@click="openModalChangeMencion(detailPostulate.postulacion._id, detailPostulate.postulacion.premioId)"
-					v-if="!detailPostulate.postulacion.score && ($store.getters['Auth/role'] == 1 || $store.getters['Auth/role'] == 4)"
+					v-if="$store.getters['Auth/role'] == 1 || $store.getters['Auth/role'] == 4"
 				>
-					Cambiar mención 
+					Cambiar mención
 				</v-btn>
 				<v-btn
 					class="ml-2"
@@ -215,6 +224,12 @@
 			sendEvent(){
 				this.$emit('reloadPostulation');
 				this.modal = false
+			},
+
+			closeModal () {
+				this.modal = false
+				this.files = [];
+				this.$emit('reloadPostulation');
 			},
 
 			changeStatus(id, status, typeButton = 'other') {

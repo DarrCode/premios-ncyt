@@ -152,8 +152,8 @@ export default {
     return {
       postulations: [],
       loadingPostulations: false,
-      selectStatus: ['Validado', 'Evaluado'],
-      status: 'Validado',
+      selectStatus: ['Verificado', 'Evaluado'],
+      status: 'Verificado',
       message: {
         title: '',
         color: '',
@@ -257,7 +257,7 @@ export default {
 
       if (premioId !== null) filters.premioId = premioId
       if (mencionId !== null) filters.mencionId = mencionId
-      if(this.status === 'Validado') filters.status = this.status
+      if(this.status === 'Verificado') filters.status = this.status
       if(this.status === 'Evaluado') filters.status = this.status
 
       const data = {
