@@ -152,7 +152,7 @@ export default {
     return {
       postulations: [],
       loadingPostulations: false,
-      selectStatus: ['Verificado', 'Evaluado'],
+      selectStatus: ['Verificado', 'Evaluado', 'En espera'],
       status: 'Verificado',
       message: {
         title: '',
