@@ -8,7 +8,7 @@
 		<v-card>
 			<v-toolbar color="primary" dark>
 				<v-btn
-					v-if="detailPostulate.postulacion.status == 'Verificado'"
+					v-if="detailPostulate.postulacion.status == 'Verificado' || detailPostulate.postulacion.status == 'Evaluado'"
 					icon
 					dark
 					@click="closeModal()"
