@@ -83,16 +83,6 @@
                 {{ item.status }}
               </v-chip>
             </template>
-            <template v-slot:[`item.total`]="{ item }">
-              <v-chip
-                :color="levelRating(item.total)"
-                dark
-                outlined
-              >
-              {{ item.total ?? 0 }} puntos
-              </v-chip>
-            </template>
-
             <template v-slot:[`item.actions`]="{ item }">
               <div class="d-flex">
                 <v-btn 
@@ -192,12 +182,6 @@ export default {
         { text: 'Nominación', 
           value: 'mencionName' 
         },
-        // { text: 'Estado', 
-        //   value: 'status' 
-        // },
-        { text: 'Total', 
-          value: 'total' 
-        },
         { text: ' ', 
           value: 'actions', 
           align: 'center' 
@@ -209,14 +193,6 @@ export default {
     this.index()
   },
   methods: {
-    levelRating(total) { 
-      if (total <= 10 || total == undefined) {
-        return 'error'
-      } else if (total > 10 && total <= 15) {
-        return 'warning'
-      }  
-      return 'success'
-    },
     openModalRating(postulationId, score){
       this.$refs['modalRating'].open(postulationId, score)
     },
@@ -241,11 +217,6 @@ export default {
       })
     },
     index(){
-      // if (this.postulations.length > 0) {
-      //   this.message.snackbar = true
-      //   this.message.title = 'Operación exitosa!'
-      //   this.message.color = 'success'
-      // }
 
       this.loadingPostulations = true
 
