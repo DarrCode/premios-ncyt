@@ -142,7 +142,7 @@ export default {
     return {
       postulations: [],
       loadingPostulations: false,
-      selectStatus: ['Verificado', 'Evaluado'],
+      selectStatus: ['Verificado', 'Evaluado', 'En espera'],
       status: 'Verificado',
       message: {
         title: '',
@@ -230,6 +230,7 @@ export default {
       if (mencionId !== null) filters.mencionId = mencionId
       if(this.status === 'Verificado') filters.status = this.status
       if(this.status === 'Evaluado') filters.status = this.status
+      if(this.status === 'En espera') filters.status = this.status
 
       const data = {
         route: 'api/postulaciones',
