@@ -20,8 +20,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -35,8 +35,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -55,8 +55,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -70,8 +70,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -85,8 +85,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -100,8 +100,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -120,8 +120,8 @@
                 length="3"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -135,8 +135,8 @@
                 length="3"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -150,8 +150,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -165,8 +165,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -179,7 +179,7 @@
         color="primary"
         outlined
         @click="sendRating"
-        :disabled="scoreReceived"
+        :disabled="disabledRating"
       >
         Calificar
       </v-btn>
@@ -191,28 +191,42 @@ export default {
   name: 'BaremoMejorTrabajo',
   props: {
     scoreReceived: {
-      type: Object
+      type: Array
     }
   },
   data() {
     return {
       rating: {},
-      score: 0
+      score: 0,
+      disabledRating: false
+    }
+  },
+  computed: {
+    
+    userId () {
+      return this.$store.getters['Auth/user'].user.id
     }
   },
   mounted () {
-    if (this.scoreReceived) {
-      this.rating = this.scoreReceived
-      this.score = (parseInt(this.rating.general1) || 0) + (parseInt(this.rating.general2) || 0) + (parseInt(this.rating.general3) || 0) + (parseInt(this.rating.general4) || 0) + (parseInt(this.rating.aporte1) || 0) + (parseInt(this.rating.aporte2) || 0) + (parseInt(this.rating.aporte3) || 0) + (parseInt(this.rating.aporte4) || 0) + (parseInt(this.rating.impacto1) || 0) + (parseInt(this.rating.impacto2) || 0) + (parseInt(this.rating.impacto3) || 0) + (parseInt(this.rating.impacto4) || 0);
+    if (this.scoreReceived.length > 0) {
+      const rating = {}
+
+      this.scoreReceived.find(item => {
+        if (item.createdBy.userId === this.userId) {
+          const values = item.values
+          Object.assign(rating, values)
+          this.rating = rating
+          this.disabledRating = true
+        } else {
+          this.rating = {}
+        }
+      })
     }
   },
   methods: {
-    addRating(rating){ 
-      this.score = (parseInt(rating.general1) || 0) + (parseInt(rating.general2) || 0) + (parseInt(rating.general3) || 0) + (parseInt(rating.general4) || 0) + (parseInt(rating.aporte1) || 0) + (parseInt(rating.aporte2) || 0) + (parseInt(rating.aporte3) || 0) + (parseInt(rating.aporte4) || 0) + (parseInt(rating.impacto1) || 0) + (parseInt(rating.impacto2) || 0) + (parseInt(rating.impacto3) || 0) + (parseInt(rating.impacto4) || 0);
-    },
     sendRating () {
-      this.$emit('sendRating', this.rating, this.score)
-    }
+      this.$emit('sendRating', this.rating)
+    },
   }
 }
 </script>

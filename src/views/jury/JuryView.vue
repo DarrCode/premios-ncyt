@@ -94,8 +94,16 @@
                   <v-icon>mdi-eye-outline</v-icon>
                 </v-btn>
                 <v-btn
+                  color="deep-purple darken-3"
+                  class="mx-1"
+                  icon
+                  @click="openModalAudit(item.score)"
+                  title="Auditar"
+                >
+                  <v-icon>mdi-magnify-scan</v-icon>
+                </v-btn>
+                <v-btn
                   color="amber"
-                  class="ml-1"
                   icon
                   @click="openModalRating(item._id, item.score)"
                   title="Evaluar"
@@ -111,16 +119,18 @@
         </v-card>
       </v-col>
       <v-snackbar
-      v-model="message.snackbar"
-      :color="message.color"
-    >
-      {{ message.title }}
-
-    </v-snackbar>
+        v-model="message.snackbar"
+        :color="message.color"
+      >
+        {{ message.title }}
+      </v-snackbar>
     </v-row>
     <ModalRating
 			ref="modalRating"
       @reloadPostulations="index"
+		/>
+    <ModalAudit
+			ref="modalAudit"
 		/>
     <detailsPostulate 
       ref="modalDetailsPostulate" 
@@ -135,8 +145,9 @@ import http from "@/api/api.js"
 export default {
   name: 'PremiosNcytJuryView',
   components: {
-    detailsPostulate: () => import(/* webpackPrefetch: true */ '@/components/postulates/DetailsPostulate.vue'),
-		ModalRating: () => import(/* webpackPrefetch: true */ '@/components/jury/ModalBaremos')
+    detailsPostulate: () => import(/* webpackPrefetch: true */ '@/components/postulates/DetailsPostulate'),
+		ModalRating: () => import(/* webpackPrefetch: true */ '@/components/jury/ModalBaremos'),
+    ModalAudit: () => import(/* webpackPrefetch: true */ '@/components/jury/ModalAudit')
   },
   data() {
     return {
@@ -182,7 +193,7 @@ export default {
         { text: 'Nominación', 
           value: 'mencionName' 
         },
-        { text: ' ', 
+        { text: '', 
           value: 'actions', 
           align: 'center' 
         }
@@ -195,6 +206,9 @@ export default {
   methods: {
     openModalRating(postulationId, score){
       this.$refs['modalRating'].open(postulationId, score)
+    },
+    openModalAudit(score){
+      this.$refs['modalAudit'].open(score)
     },
     getDetailPostulate(item){
       const data = {
@@ -217,7 +231,6 @@ export default {
       })
     },
     index(){
-
       this.loadingPostulations = true
 
       const user = this.$store.getters['Auth/user'].user

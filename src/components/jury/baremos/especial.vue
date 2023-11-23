@@ -20,8 +20,8 @@
                 length="3"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -40,8 +40,8 @@
                 length="3"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -55,8 +55,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -75,8 +75,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -90,8 +90,8 @@
                 length="3"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -110,8 +110,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -125,8 +125,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -140,8 +140,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -155,8 +155,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -170,8 +170,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -190,8 +190,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -205,8 +205,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -219,7 +219,7 @@
           color="primary"
           outlined
           @click="sendRating"
-          :disabled="scoreReceived"
+          :disabled="disabledRating"
         >
           Calificar
         </v-btn>
@@ -231,28 +231,42 @@ export default {
   name: 'BaremoEspecial',
   props: {
     scoreReceived: {
-      type: Object
+      type: Array
     }
   },
   data() {
     return {
       rating: {},
-      score: 0
+      score: 0,
+      disabledRating: false
+    }
+  },
+  computed: {
+    
+    userId () {
+      return this.$store.getters['Auth/user'].user.id
     }
   },
   mounted () {
-    if (this.scoreReceived) {
-      this.rating = this.scoreReceived
-      this.score = (parseInt(this.rating.originalidad) || 0) + (parseInt(this.rating.impactosocial1) || 0) + (parseInt(this.rating.impactosocial2) || 0) + (parseInt(this.rating.utilidad1) || 0) + (parseInt(this.rating.utilidad2) || 0) + (parseInt(this.rating.presentacionJurado1) || 0) + (parseInt(this.rating.presentacionJurado2) || 0) + (parseInt(this.rating.presentacionJurado3) || 0) + (parseInt(this.rating.presentacionJurado4) || 0) + (parseInt(this.rating.presentacionJurado5) || 0) + (parseInt(this.rating.insumos1) || 0) + (parseInt(this.rating.insumos2) || 0)
+    if (this.scoreReceived.length > 0) {
+      const rating = {}
+
+      this.scoreReceived.find(item => {
+        if (item.createdBy.userId === this.userId) {
+          const values = item.values
+          Object.assign(rating, values)
+          this.rating = rating
+          this.disabledRating = true
+        } else {
+          this.rating = {}
+        }
+      })
     }
   },
   methods: {
-    addRating(rating){ 
-      this.score = (parseInt(this.rating.originalidad) || 0) + (parseInt(rating.impactosocial1) || 0) + (parseInt(rating.impactosocial2) || 0) + (parseInt(rating.utilidad1) || 0) + (parseInt(rating.utilidad2) || 0) + (parseInt(rating.presentacionJurado1) || 0) + (parseInt(rating.presentacionJurado2) || 0) + (parseInt(rating.presentacionJurado3) || 0) + (parseInt(rating.presentacionJurado4) || 0) + (parseInt(rating.presentacionJurado5) || 0) + (parseInt(rating.insumos1) || 0) + (parseInt(rating.insumos2) || 0)
-    },
     sendRating () {
-      this.$emit('sendRating', this.rating, this.score)
-    }
+      this.$emit('sendRating', this.rating)
+    },
   }
 }
 </script>

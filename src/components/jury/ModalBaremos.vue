@@ -48,7 +48,7 @@
 import http from "@/api/api.js"
 
 export default {
-  name: 'ModalObservation',
+  name: 'ModalBaremo',
   components: {
     BaremoEspecial: () => import(/* webpackPrefetch: true */ '@/components/jury/baremos/especial'),
     BaremoLuisZambrano: () => import(/* webpackPrefetch: true */ '@/components/jury/baremos/luisZambrano'),

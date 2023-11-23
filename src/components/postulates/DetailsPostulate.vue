@@ -6,7 +6,7 @@
 		transition="dialog-bottom-transition"
 	>
 		<v-card>
-			<v-toolbar color="primary" dark>
+			<v-toolbar color="primary" dark v-if="detailPostulate">
 				<v-btn
 					v-if="detailPostulate.postulacion.status == 'Verificado' || detailPostulate.postulacion.status == 'Evaluado'"
 					icon
@@ -19,7 +19,7 @@
 					v-else
 					icon
 					dark
-					@click="changeStatus(detailPostulate.postulacion._id, 'En espera', 'close')"
+					@click="changeStatus(detailPostulate?.postulacion?._id, 'En espera', 'close')"
 				>
 					<v-icon>mdi-close</v-icon>
 				</v-btn>

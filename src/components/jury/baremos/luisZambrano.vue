@@ -21,8 +21,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -36,8 +36,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -56,8 +56,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -71,8 +71,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -91,8 +91,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -106,8 +106,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -121,8 +121,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -136,8 +136,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -156,8 +156,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -171,8 +171,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -186,8 +186,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -201,8 +201,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -216,8 +216,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -236,8 +236,8 @@
                 length="2"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
             <v-expansion-panel-content >
@@ -251,8 +251,8 @@
                 length="1"
                 value="0"
                 clearable 
-                :readonly="scoreReceived"
-                @input="addRating(rating)"
+                :readonly="disabledRating"
+                
               ></v-rating>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -266,7 +266,7 @@
           color="primary"
           outlined
           @click="sendRating"
-          :disabled="scoreReceived"
+          :disabled="disabledRating"
         >
           Calificar
         </v-btn>
@@ -278,28 +278,42 @@ export default {
   name: 'BaremoLuisZambrano',
   props: {
     scoreReceived: {
-      type: Object
+      type: Array
     }
   },
   data() {
     return {
       rating: {},
-      score: 0
+      score: 0,
+      disabledRating: false
+    }
+  },
+  computed: {
+    
+    userId () {
+      return this.$store.getters['Auth/user'].user.id
     }
   },
   mounted () {
-    if (this.scoreReceived) {
-      this.rating = this.scoreReceived
-      this.score = (parseInt(this.rating.originalidad1) || 0) + (parseInt(this.rating.originalidad2) || 0) + (parseInt(this.rating.viabilidad1) || 0) + (parseInt(this.rating.viabilidad2) || 0) + (parseInt(this.rating.utilidad1) || 0) + (parseInt(this.rating.utilidad2) || 0) + (parseInt(this.rating.utilidad3) || 0) + (parseInt(this.rating.utilidad4) || 0) + (parseInt(this.rating.defensaJurado1) || 0) + (parseInt(this.rating.defensaJurado2) || 0) + (parseInt(this.rating.defensaJurado3) || 0) + (parseInt(this.rating.defensaJurado4) || 0) + (parseInt(this.rating.defensaJurado5) || 0) + (parseInt(this.rating.elaboracionDiseno1) || 0) + (parseInt(this.rating.elaboracionDiseno2) || 0)
+    if (this.scoreReceived.length > 0) {
+      const rating = {}
+
+      this.scoreReceived.find(item => {
+        if (item.createdBy.userId === this.userId) {
+          const values = item.values
+          Object.assign(rating, values)
+          this.rating = rating
+          this.disabledRating = true
+        } else {
+          this.rating = {}
+        }
+      })
     }
   },
   methods: {
-    addRating(rating){ 
-      this.score = (parseInt(rating.originalidad1) || 0) + (parseInt(rating.originalidad2) || 0) + (parseInt(rating.viabilidad1) || 0) + (parseInt(rating.viabilidad2) || 0) + (parseInt(rating.utilidad1) || 0) + (parseInt(rating.utilidad2) || 0) + (parseInt(rating.utilidad3) || 0) + (parseInt(rating.utilidad4) || 0) + (parseInt(rating.defensaJurado1) || 0) + (parseInt(rating.defensaJurado2) || 0) + (parseInt(rating.defensaJurado3) || 0) + (parseInt(rating.defensaJurado4) || 0) + (parseInt(rating.defensaJurado5) || 0) + (parseInt(rating.elaboracionDiseno1) || 0) + (parseInt(rating.elaboracionDiseno2) || 0)
-    },
     sendRating () {
-      this.$emit('sendRating', this.rating, this.score)
-    }
+      this.$emit('sendRating', this.rating)
+    },
   }
 }
 </script>
